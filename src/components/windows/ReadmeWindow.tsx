@@ -1,180 +1,400 @@
 'use client';
 
 import { useState } from 'react';
-import { customizationItems, categories } from '@/data/customization';
+import { useWindowStore } from '@/stores/windowStore';
 import { cn } from '@/lib/utils';
-import { ChevronDown, ChevronRight, Download, FileText, Sparkles } from 'lucide-react';
+import {
+  Sparkles,
+  Brain,
+  Users,
+  Code,
+  Layers,
+  Heart,
+  Briefcase,
+  CheckCircle2,
+  ArrowRight,
+  ExternalLink,
+  Target,
+  TrendingUp,
+  Zap,
+  ChevronDown,
+  ChevronRight,
+} from 'lucide-react';
+
+interface FitSection {
+  id: string;
+  title: string;
+  icon: React.ElementType;
+  requirement: string;
+  evidence: string[];
+  verdict: 'strong' | 'good' | 'developing';
+}
+
+const fitSections: FitSection[] = [
+  {
+    id: 'ai-native',
+    title: 'AI-Native Product Practice',
+    icon: Brain,
+    requirement: 'Actively uses AI to think better, move faster, and designs products that responsibly leverage AI.',
+    evidence: [
+      'Built this entire portfolio site (HoganOS) with Claude Code in a single session',
+      'At ZenBusiness: Integrated Velo AI into front-end tooling, improving funnel starts by 70%',
+      'Use AI daily for discovery, prototyping, code generation, and analysis',
+      'Side projects (Job Journal, Darwin) built with AI-assisted development',
+      'Strong opinion: AI changes *how* we build, not just *what* we build',
+    ],
+    verdict: 'strong',
+  },
+  {
+    id: 'customer-obsessed',
+    title: 'Customer-Problem Obsessed',
+    icon: Users,
+    requirement: 'Measures success by problems eliminated and outcomes achieved, not feature counts.',
+    evidence: [
+      'At Mattermost: Led 3x weekly user interviews to iterate on signup funnel',
+      'At Wellcore: Reduced churn 60% by identifying repeated data entry as the core friction',
+      'At Clearhead: Ran 600+ experiments with 36% win rate — killed more bad ideas than shipped',
+      'Philosophy: "What problem are we solving?" is the first question, always',
+      'Outcomes > outputs: Every resume bullet is a metric, not a feature list',
+    ],
+    verdict: 'strong',
+  },
+  {
+    id: 'technical',
+    title: 'Technically Fluent',
+    icon: Code,
+    requirement: 'Can engage deeply with engineers on architecture, trade-offs, and scalability.',
+    evidence: [
+      'Hands-on: HTML/CSS/JS, SQL, Python, Swift, React/Next.js',
+      'At Indeed: Built attribution systems requiring deep analytics architecture understanding',
+      'At Wellcore: Led full-stack EHR platform build, made tech decisions alongside engineering',
+      'Shipped production code in side projects — not just specs',
+      'Can read a PR, debate an architecture decision, and know when to defer to eng',
+    ],
+    verdict: 'strong',
+  },
+  {
+    id: 'systems-thinker',
+    title: 'Systems Thinker',
+    icon: Layers,
+    requirement: 'Thinks beyond individual screens to platforms, workflows, and ecosystems.',
+    evidence: [
+      'At Clearhead: Built experimentation platform that enabled 5 downstream teams',
+      'At Wellcore: Designed patient-provider-admin ecosystem, not just screens',
+      'At ZenBusiness: Managed multiple streams, increasing A/B testing throughput 250%',
+      'Growth PM mindset = understanding the full funnel, not just one step',
+      'Platform thinking: Strong defaults + configurability without brittleness',
+    ],
+    verdict: 'strong',
+  },
+  {
+    id: 'mission-driven',
+    title: 'Mission-Driven but Pragmatic',
+    icon: Heart,
+    requirement: 'Wants to change the world, understands durable impact requires focus and execution.',
+    evidence: [
+      'At Wellcore: Health-tech for longevity optimization — literally helping people live better',
+      'Former rock climbing guide — comfortable with calculated risk and real consequences',
+      'Growth PM = measurable impact, not vanity metrics',
+      'Bonterra fit: Social good + enterprise scale = exactly my lane',
+      '"Just a dude having fun" = I care deeply but don\'t take myself too seriously',
+    ],
+    verdict: 'strong',
+  },
+  {
+    id: 'experience',
+    title: '8+ Years PM Experience',
+    icon: Briefcase,
+    requirement: 'PM experience in SaaS with complex, platform-oriented products.',
+    evidence: [
+      '8+ years: ZenBusiness, Wellcore, Mattermost, Indeed, Clearhead/Accenture',
+      'Principal/Staff level at multiple companies',
+      'Platform products: EHR systems, experimentation infrastructure, growth tooling',
+      'Enterprise + SMB experience across B2B and B2C',
+      'OU BBA 2010: Entrepreneurship & Finance (yes, I understand the business side)',
+    ],
+    verdict: 'strong',
+  },
+];
+
+const keyAccomplishments = [
+  {
+    title: 'Multi-Quarter Initiative: Mattermost Growth',
+    description: 'Led Growth MLX team over multiple quarters, driving cloud signups +270% and day 14 activation from 8% to 25%.',
+    impact: 'Customer adoption & retention',
+  },
+  {
+    title: 'Difficult Trade-offs: Wellcore Platform',
+    description: 'Made hard calls on EHR platform architecture — balancing speed-to-market with HIPAA compliance and long-term scalability.',
+    impact: 'Platform health',
+  },
+  {
+    title: 'Foundational Capability: Indeed Experimentation',
+    description: 'Built experimentation infrastructure that improved velocity 600% for 5 teams. Enabled downstream teams to run their own experiments.',
+    impact: 'Platform enablement',
+  },
+  {
+    title: 'Revenue Impact: SONOS Checkout',
+    description: 'Led checkout redesign at Clearhead that delivered +22% conversion and $12MM incremental revenue.',
+    impact: 'Business results',
+  },
+];
+
+const verdictColors = {
+  strong: 'bg-green-500/20 text-green-400 border-green-500/30',
+  good: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+  developing: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+};
+
+const verdictLabels = {
+  strong: 'Strong Fit',
+  good: 'Good Fit',
+  developing: 'Developing',
+};
 
 export function ReadmeWindow() {
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
-    new Set(['WALLPAPER', 'PROFILE'])
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    new Set(['ai-native', 'customer-obsessed'])
   );
-  const [filter, setFilter] = useState('');
+  const { openWindow } = useWindowStore();
 
-  const toggleCategory = (category: string) => {
-    const newExpanded = new Set(expandedCategories);
-    if (newExpanded.has(category)) {
-      newExpanded.delete(category);
+  const toggleSection = (id: string) => {
+    const newExpanded = new Set(expandedSections);
+    if (newExpanded.has(id)) {
+      newExpanded.delete(id);
     } else {
-      newExpanded.add(category);
+      newExpanded.add(id);
     }
-    setExpandedCategories(newExpanded);
+    setExpandedSections(newExpanded);
   };
 
-  const filteredItems = filter
-    ? customizationItems.filter(
-        item =>
-          item.item.toLowerCase().includes(filter.toLowerCase()) ||
-          item.notes.toLowerCase().includes(filter.toLowerCase()) ||
-          item.category.toLowerCase().includes(filter.toLowerCase())
-      )
-    : customizationItems;
-
-  const filteredCategories = filter
-    ? [...new Set(filteredItems.map(item => item.category))]
-    : categories;
-
-  const downloadCSV = () => {
-    const headers = ['Category', 'Item', 'Current Value', 'File Location', 'Notes'];
-    const rows = customizationItems.map(item => [
-      item.category,
-      item.item,
-      item.currentValue,
-      item.fileLocation,
-      item.notes,
-    ]);
-
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')),
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'hoganos-customization-guide.csv';
-    a.click();
-    URL.revokeObjectURL(url);
+  const handleOpenWindow = (id: string, title: string) => {
+    openWindow(id, title, id);
   };
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Header */}
-      <div className="p-4 border-b border-[var(--border-color)] bg-[var(--bg-secondary)]">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-            <FileText className="w-5 h-5 text-white" />
+    <div className="h-full flex flex-col overflow-hidden">
+      {/* Hero Header */}
+      <div className="p-6 bg-gradient-to-br from-[var(--accent)]/20 via-purple-500/10 to-pink-500/10 border-b border-[var(--border-color)]">
+        <div className="flex items-start gap-4">
+          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--accent)] to-purple-500 flex items-center justify-center shrink-0">
+            <Target className="w-7 h-7 text-white" />
           </div>
-          <div>
-            <h1 className="font-bold text-[var(--text-primary)]">README.txt</h1>
-            <p className="text-xs text-[var(--text-muted)]">HoganOS Customization Guide</p>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <h1 className="text-xl font-bold text-[var(--text-primary)]">Don Hogan</h1>
+              <span className="text-xl">→</span>
+              <h1 className="text-xl font-bold text-[var(--accent)]">Bonterra</h1>
+            </div>
+            <p className="text-[var(--text-secondary)] text-sm mb-3">
+              Principal Product Manager, CSR — Role Fit Analysis
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
+                <CheckCircle2 className="w-3 h-3 inline mr-1" />
+                Strong Overall Fit
+              </span>
+              <span className="px-2 py-1 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
+                8+ years PM
+              </span>
+              <span className="px-2 py-1 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
+                AI-Native
+              </span>
+              <span className="px-2 py-1 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
+                Growth Expert
+              </span>
+            </div>
           </div>
-        </div>
-
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Search customization options..."
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className={cn(
-              'flex-1 px-3 py-1.5 rounded-md text-sm',
-              'bg-[var(--bg-window)] border border-[var(--border-color)]',
-              'text-[var(--text-primary)] placeholder-[var(--text-muted)]',
-              'focus:outline-none focus:border-[var(--accent)]'
-            )}
-          />
-          <button
-            onClick={downloadCSV}
-            className={cn(
-              'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm',
-              'bg-[var(--accent)] text-white',
-              'hover:bg-[var(--accent-hover)]'
-            )}
-          >
-            <Download className="w-4 h-4" />
-            CSV
-          </button>
         </div>
       </div>
 
-      {/* Intro */}
-      <div className="p-4 border-b border-[var(--border-color)] bg-gradient-to-r from-purple-500/10 to-pink-500/10">
+      {/* Quick Summary */}
+      <div className="p-4 border-b border-[var(--border-color)] bg-[var(--bg-secondary)]">
         <div className="flex items-start gap-3">
-          <Sparkles className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+          <Sparkles className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
           <div className="text-sm text-[var(--text-secondary)]">
-            <p className="font-medium text-[var(--text-primary)] mb-1">Make it yours!</p>
+            <p className="font-medium text-[var(--text-primary)] mb-1">TL;DR</p>
             <p>
-              This guide lists every customizable element in HoganOS. Inspired by{' '}
-              <span className="text-[var(--accent)]">PostHog&apos;s</span> playful desktop UI,
-              you can add custom illustrations, fun names, easter eggs, and personality throughout.
+              Growth PM with 8+ years building AI-powered, outcome-focused products.
+              Track record of 10x improvements in experimentation velocity, activation rates, and revenue.
+              Technically fluent enough to build this site with Claude Code. Mission-driven enough to care about
+              increasing the giving rate. Pragmatic enough to ship.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-auto p-2">
-        {filteredCategories.map((category) => {
-          const items = filteredItems.filter(item => item.category === category);
-          const isExpanded = expandedCategories.has(category);
+      {/* Main Content - Scrollable */}
+      <div className="flex-1 overflow-auto">
+        {/* Qualification Sections */}
+        <div className="p-4">
+          <h2 className="text-sm font-semibold text-[var(--text-muted)] uppercase tracking-wide mb-3">
+            Qualification Fit
+          </h2>
 
-          return (
-            <div key={category} className="mb-2">
-              <button
-                onClick={() => toggleCategory(category)}
+          <div className="space-y-2">
+            {fitSections.map((section) => {
+              const isExpanded = expandedSections.has(section.id);
+              const Icon = section.icon;
+
+              return (
+                <div
+                  key={section.id}
+                  className={cn(
+                    'rounded-lg border border-[var(--border-color)]',
+                    'bg-[var(--bg-secondary)]'
+                  )}
+                >
+                  <button
+                    onClick={() => toggleSection(section.id)}
+                    className={cn(
+                      'w-full flex items-center gap-3 p-3',
+                      'hover:bg-[var(--bg-tertiary)] transition-colors',
+                      'text-left rounded-lg'
+                    )}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[var(--bg-tertiary)] flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-[var(--accent)]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-[var(--text-primary)] text-sm">
+                        {section.title}
+                      </p>
+                    </div>
+                    <span className={cn(
+                      'px-2 py-0.5 text-xs rounded-full border',
+                      verdictColors[section.verdict]
+                    )}>
+                      {verdictLabels[section.verdict]}
+                    </span>
+                    {isExpanded ? (
+                      <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
+                    ) : (
+                      <ChevronRight className="w-4 h-4 text-[var(--text-muted)]" />
+                    )}
+                  </button>
+
+                  {isExpanded && (
+                    <div className="px-4 pb-4">
+                      <p className="text-xs text-[var(--text-muted)] italic mb-3 pl-11">
+                        "{section.requirement}"
+                      </p>
+                      <div className="space-y-2 pl-11">
+                        {section.evidence.map((item, index) => (
+                          <div key={index} className="flex items-start gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
+                            <p className="text-sm text-[var(--text-secondary)]">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Key Accomplishments */}
+        <div className="p-4 border-t border-[var(--border-color)]">
+          <h2 className="text-sm font-semibold text-[var(--text-muted)] uppercase tracking-wide mb-3">
+            You've Successfully...
+          </h2>
+          <div className="grid gap-3">
+            {keyAccomplishments.map((item, index) => (
+              <div
+                key={index}
                 className={cn(
-                  'w-full flex items-center gap-2 px-3 py-2 rounded-md',
-                  'hover:bg-[var(--bg-tertiary)] transition-colors',
-                  'text-left'
+                  'p-3 rounded-lg',
+                  'bg-[var(--bg-secondary)] border border-[var(--border-color)]'
                 )}
               >
-                {isExpanded ? (
-                  <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
-                ) : (
-                  <ChevronRight className="w-4 h-4 text-[var(--text-muted)]" />
-                )}
-                <span className="font-medium text-[var(--text-primary)]">{category}</span>
-                <span className="text-xs text-[var(--text-muted)]">({items.length})</span>
-              </button>
-
-              {isExpanded && (
-                <div className="ml-6 mt-1 space-y-1">
-                  {items.map((item, index) => (
-                    <div
-                      key={`${category}-${index}`}
-                      className={cn(
-                        'p-3 rounded-md',
-                        'bg-[var(--bg-secondary)] border border-[var(--border-color)]'
-                      )}
-                    >
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <span className="font-medium text-[var(--text-primary)] text-sm">
-                          {item.item}
-                        </span>
-                        <span className="text-xs px-2 py-0.5 rounded bg-[var(--bg-tertiary)] text-[var(--text-muted)] shrink-0">
-                          {item.currentValue}
-                        </span>
-                      </div>
-                      <p className="text-xs text-[var(--text-secondary)] mb-2">{item.notes}</p>
-                      <code className="text-xs text-[var(--accent)] bg-[var(--bg-tertiary)] px-1.5 py-0.5 rounded block overflow-x-auto">
-                        {item.fileLocation}
-                      </code>
-                    </div>
-                  ))}
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[var(--accent)]/20 flex items-center justify-center shrink-0">
+                    <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-[var(--text-primary)] text-sm">{item.title}</p>
+                    <p className="text-xs text-[var(--text-secondary)] mt-1">{item.description}</p>
+                    <span className="inline-block mt-2 px-2 py-0.5 text-xs rounded bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
+                      {item.impact}
+                    </span>
+                  </div>
                 </div>
-              )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CSR/Social Impact Note */}
+        <div className="p-4 border-t border-[var(--border-color)]">
+          <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
+            <div className="flex items-start gap-3">
+              <Heart className="w-5 h-5 text-pink-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-[var(--text-primary)] text-sm mb-1">
+                  On CSR & Social Impact
+                </p>
+                <p className="text-sm text-[var(--text-secondary)]">
+                  While I haven't worked directly in CSR/ESG, my experience at Wellcore (health-tech for longevity)
+                  and my personal values align strongly with Bonterra's mission. Growth PM skills transfer directly —
+                  the principles of customer-obsession, experimentation, and outcome-focused development apply
+                  whether you're optimizing signup funnels or donation flows. I'm energized by the idea of applying
+                  my toolkit to increase the giving rate.
+                </p>
+              </div>
             </div>
-          );
-        })}
+          </div>
+        </div>
+
+        {/* Quick Links */}
+        <div className="p-4 border-t border-[var(--border-color)]">
+          <h2 className="text-sm font-semibold text-[var(--text-muted)] uppercase tracking-wide mb-3">
+            Dig Deeper
+          </h2>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { id: 'resume', title: 'Hire Me.pdf', desc: 'Full resume' },
+              { id: 'experience', title: 'The Journey', desc: 'Work history' },
+              { id: 'projects', title: 'Side Quests', desc: 'What I build' },
+              { id: 'about', title: 'The Dude', desc: 'Who I am' },
+            ].map((link) => (
+              <button
+                key={link.id}
+                onClick={() => handleOpenWindow(link.id, link.title)}
+                className={cn(
+                  'flex items-center gap-2 p-3 rounded-lg text-left',
+                  'bg-[var(--bg-secondary)] border border-[var(--border-color)]',
+                  'hover:bg-[var(--bg-tertiary)] transition-colors'
+                )}
+              >
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-[var(--text-primary)]">{link.title}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{link.desc}</p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-[var(--text-muted)]" />
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Footer */}
       <div className="p-3 border-t border-[var(--border-color)] bg-[var(--bg-secondary)]">
-        <p className="text-xs text-[var(--text-muted)] text-center">
-          {customizationItems.length} customization options across {categories.length} categories
-        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-[var(--text-muted)]">
+            Built with Claude Code — proof of AI-native practice
+          </p>
+          <a
+            href="https://bonterra.wd1.myworkdayjobs.com/en-US/bonterratech/job/Principal-Product-Manager--CSR_R2026-0038"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-xs text-[var(--accent)] hover:underline"
+          >
+            View JD
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
       </div>
     </div>
   );
