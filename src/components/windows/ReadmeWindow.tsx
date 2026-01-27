@@ -37,10 +37,10 @@ const fitSections: FitSection[] = [
     icon: Brain,
     requirement: 'Actively uses AI to think better, move faster, and designs products that responsibly leverage AI.',
     evidence: [
+      'At Healthty (2025): Built multi-agent LLM system for clinical workflow automation across Epic, Cerner, Athena',
       'Built this entire portfolio site (HoganOS) with Claude Code in a single session',
       'At ZenBusiness: Integrated Velo AI into front-end tooling, improving funnel starts by 70%',
       'Use AI daily for discovery, prototyping, code generation, and analysis',
-      'Side projects (Job Journal, Darwin) built with AI-assisted development',
       'Strong opinion: AI changes *how* we build, not just *what* we build',
     ],
     verdict: 'strong',
@@ -107,9 +107,9 @@ const fitSections: FitSection[] = [
     icon: Briefcase,
     requirement: 'PM experience in SaaS with complex, platform-oriented products.',
     evidence: [
-      '8+ years: ZenBusiness, Wellcore, Mattermost, Indeed, Clearhead/Accenture',
+      '8+ years: Healthty, ZenBusiness, Wellcore, Mattermost, Indeed, Clearhead/Accenture',
       'Principal/Staff level at multiple companies',
-      'Platform products: EHR systems, experimentation infrastructure, growth tooling',
+      'Platform products: Multi-agent AI systems, EHR platforms, experimentation infrastructure',
       'Enterprise + SMB experience across B2B and B2C',
       'OU BBA 2010: Entrepreneurship & Finance (yes, I understand the business side)',
     ],
@@ -332,15 +332,30 @@ export function ReadmeWindow() {
             <div className="flex items-start gap-3">
               <Heart className="w-5 h-5 text-pink-400 shrink-0 mt-0.5" />
               <div>
-                <p className="font-medium text-[var(--text-primary)] text-sm mb-1">
-                  On CSR & Social Impact
+                <p className="font-medium text-[var(--text-primary)] text-sm mb-2">
+                  Why CSR? The Patterns Transfer.
                 </p>
-                <p className="text-sm text-[var(--text-secondary)]">
-                  While I haven't worked directly in CSR/ESG, my experience at Wellcore (health-tech for longevity)
-                  and my personal values align strongly with Bonterra's mission. Growth PM skills transfer directly —
-                  the principles of customer-obsession, experimentation, and outcome-focused development apply
-                  whether you're optimizing signup funnels or donation flows. I'm energized by the idea of applying
-                  my toolkit to increase the giving rate.
+                <p className="text-sm text-[var(--text-secondary)] mb-3">
+                  Most recently at <span className="text-[var(--accent)]">Healthty</span> (2025), I built AI-powered clinical workflow
+                  automation — a multi-agent LLM system handling APCM billing across Epic, Cerner, and Athena.
+                  The technical and organizational challenges map directly to CSR:
+                </p>
+                <div className="space-y-2 text-sm">
+                  {[
+                    { from: 'CMS billing compliance', to: 'ESG/CSR reporting requirements' },
+                    { from: 'Multi-EMR integrations', to: 'HRIS, payroll, nonprofit databases' },
+                    { from: 'Clinical AI that must be trustworthy', to: 'Grant disbursement, giving automation' },
+                    { from: 'Patient/provider/payer coordination', to: 'Corporation/nonprofit/employee alignment' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-[var(--text-secondary)]">
+                      <span className="text-[var(--text-muted)]">{item.from}</span>
+                      <ArrowRight className="w-3 h-3 text-[var(--accent)] shrink-0" />
+                      <span>{item.to}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-sm text-[var(--text-secondary)] mt-3 italic">
+                  The patterns transfer. The mission is why Bonterra excites me.
                 </p>
               </div>
             </div>

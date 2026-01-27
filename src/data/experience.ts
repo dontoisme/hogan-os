@@ -12,6 +12,22 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    id: 'healthty',
+    company: 'Healthty',
+    role: 'Principal Product Manager, Growth',
+    location: 'Austin, TX (Remote)',
+    startDate: 'Sep 2025',
+    endDate: 'Nov 2025',
+    description: 'Built AI-powered clinical workflow automation for APCM billing compliance.',
+    highlights: [
+      'Built multi-agent LLM system handling APCM billing across three major EMR platforms (Epic, Cerner, Athena)',
+      'Designed AI workflows for clinical decision support with trustworthy, explainable outputs',
+      'Navigated CMS compliance requirements while shipping fast in early-stage environment',
+      'Contract ended when startup ran out of runway',
+    ],
+    tech: ['Multi-Agent AI', 'LLM', 'Healthcare', 'EMR Integration', 'Compliance'],
+  },
+  {
     id: 'zenbusiness',
     company: 'ZenBusiness',
     role: 'Staff Product Manager of Growth',

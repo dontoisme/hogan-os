@@ -90,6 +90,21 @@ export function ResumeWindow() {
             <div className="mb-5">
               <div className="flex justify-between items-start">
                 <div>
+                  <h3 className="font-semibold text-gray-900">Principal Product Manager, Growth</h3>
+                  <p className="text-gray-600">Healthty • Austin, TX (Remote)</p>
+                </div>
+                <span className="text-sm text-gray-500">Sep 2025 - Nov 2025</span>
+              </div>
+              <ul className="mt-2 text-gray-700 text-sm space-y-1 list-disc list-inside">
+                <li>Built multi-agent LLM system for APCM billing across Epic, Cerner, and Athena EMRs</li>
+                <li>Designed AI workflows for clinical decision support with trustworthy, explainable outputs</li>
+                <li>Navigated CMS compliance requirements while shipping fast in early-stage environment</li>
+              </ul>
+            </div>
+
+            <div className="mb-5">
+              <div className="flex justify-between items-start">
+                <div>
                   <h3 className="font-semibold text-gray-900">Staff Product Manager of Growth</h3>
                   <p className="text-gray-600">ZenBusiness, Inc • Austin, TX</p>
                 </div>
