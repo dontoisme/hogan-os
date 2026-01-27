@@ -14,6 +14,7 @@ import { ContactWindow } from '../windows/ContactWindow';
 import { SettingsWindow } from '../windows/SettingsWindow';
 import { JobJournalWindow } from '../windows/JobJournalWindow';
 import { AboutWindow } from '../windows/AboutWindow';
+import { ReadmeWindow } from '../windows/ReadmeWindow';
 import { Clippy } from '../Clippy';
 import { HackerMode } from '../HackerMode';
 import {
@@ -24,19 +25,22 @@ import {
   BarChart3,
   Settings,
   User,
+  ScrollText,
 } from 'lucide-react';
 
 const desktopIcons = [
-  { id: 'projects', label: 'Projects', icon: FolderOpen, row: 0, col: 0 },
-  { id: 'resume', label: 'Resume', icon: FileText, row: 0, col: 1 },
-  { id: 'experience', label: 'Experience', icon: Briefcase, row: 1, col: 0 },
-  { id: 'job-journal', label: 'Job Journal', icon: BarChart3, row: 1, col: 1 },
-  { id: 'contact', label: 'Contact', icon: Mail, row: 2, col: 0 },
-  { id: 'about', label: 'About Me', icon: User, row: 2, col: 1 },
-  { id: 'settings', label: 'Settings', icon: Settings, row: 3, col: 0 },
+  { id: 'readme', label: 'README.txt', icon: ScrollText, row: 0, col: 0 },
+  { id: 'projects', label: 'Projects', icon: FolderOpen, row: 0, col: 1 },
+  { id: 'resume', label: 'Resume', icon: FileText, row: 1, col: 0 },
+  { id: 'experience', label: 'Experience', icon: Briefcase, row: 1, col: 1 },
+  { id: 'job-journal', label: 'Job Journal', icon: BarChart3, row: 2, col: 0 },
+  { id: 'contact', label: 'Contact', icon: Mail, row: 2, col: 1 },
+  { id: 'about', label: 'About Me', icon: User, row: 3, col: 0 },
+  { id: 'settings', label: 'Settings', icon: Settings, row: 3, col: 1 },
 ];
 
 const windowComponents: Record<string, React.ComponentType> = {
+  readme: ReadmeWindow,
   resume: ResumeWindow,
   projects: ProjectsWindow,
   experience: ExperienceWindow,
@@ -47,6 +51,7 @@ const windowComponents: Record<string, React.ComponentType> = {
 };
 
 const windowTitles: Record<string, string> = {
+  readme: 'README.txt',
   resume: 'Resume',
   projects: 'Projects',
   experience: 'Experience',
@@ -57,6 +62,7 @@ const windowTitles: Record<string, string> = {
 };
 
 const windowIcons: Record<string, string> = {
+  readme: 'scroll',
   resume: 'file',
   projects: 'folder',
   experience: 'briefcase',
