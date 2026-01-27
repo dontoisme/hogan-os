@@ -91,7 +91,7 @@ export function ResumeWindow() {
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-semibold text-gray-900">Principal Product Manager, Growth</h3>
-                  <p className="text-gray-600">Healthty • Austin, TX (Remote)</p>
+                  <p className="text-gray-600">Healthy • Austin, TX (Remote)</p>
                 </div>
                 <span className="text-sm text-gray-500">Sep 2025 - Nov 2025</span>
               </div>

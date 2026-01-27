@@ -5,7 +5,7 @@ import { useWindowStore } from '@/stores/windowStore';
 import { StartMenu } from './StartMenu';
 import { SystemTray } from './SystemTray';
 import { cn } from '@/lib/utils';
-import { Menu } from 'lucide-react';
+import Image from 'next/image';
 
 export function Taskbar() {
   const [showStartMenu, setShowStartMenu] = useState(false);
@@ -40,7 +40,13 @@ export function Taskbar() {
           )}
           onClick={() => setShowStartMenu(!showStartMenu)}
         >
-          <Menu className="w-5 h-5" />
+          <Image
+            src="/images/logo/hoganos-logo.png"
+            alt="HoganOS"
+            width={24}
+            height={24}
+            className="rounded-sm"
+          />
           <span className="text-sm font-medium hidden sm:inline">Start</span>
         </button>
 

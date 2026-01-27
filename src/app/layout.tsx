@@ -17,10 +17,15 @@ export const metadata: Metadata = {
   description: "Portfolio of Don Hogan - Principal Product Manager specializing in Growth, A/B Testing, and Product-Led Growth. 8+ years helping companies like Indeed, Mattermost, and ZenBusiness turn experimentation into results.",
   keywords: ["product manager", "growth PM", "A/B testing", "experimentation", "PLG", "product-led growth", "portfolio", "HoganOS", "conversion optimization"],
   authors: [{ name: "Don Hogan" }],
+  icons: {
+    icon: '/images/logo/hoganos-logo.png',
+    apple: '/images/logo/hoganos-logo.png',
+  },
   openGraph: {
     title: "HoganOS | Don Hogan - Principal Product Manager, Growth",
     description: "Just a dude having fun. Growth PM with a track record of turning experimentation into real business results.",
     type: "website",
+    images: ['/images/logo/hoganos-logo.png'],
   },
 };
 

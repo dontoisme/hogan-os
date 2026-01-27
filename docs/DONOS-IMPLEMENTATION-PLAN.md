@@ -309,7 +309,7 @@ drwxr-xr-x  Skills/
 a1b2c3d (HEAD -> active) Build HoganOS portfolio with Claude Code
 f4e5d6c Apply to Bonterra - Principal PM, CSR
 7g8h9i0 Ship Job Journal v1.0 - job search tracking
-j1k2l3m Complete Healthty contract (runway exhaustion)
+j1k2l3m Complete Healthy contract (runway exhaustion)
 n4o5p6q Build multi-agent LLM for APCM billing
 r7s8t9u Integrate EMR systems (Epic, Cerner, Athena)
 v1w2x3y ZenBusiness: +70% funnel starts with Velo AI
@@ -460,7 +460,7 @@ After 60 seconds idle, show bouncing text:
 | "Dad jokes: Cannot uninstall" | "Trail rides: Cannot skip" |
 | "Becker Elementary advocacy" | Remove (personal to Don A.) |
 | "Language reclamation" | Remove (personal to Don A.) |
-| Medicare/Medicaid specifics | Keep (Healthty experience) |
+| Medicare/Medicaid specifics | Keep (Healthy experience) |
 | AISD board meetings | Remove |
 | Parenting daemon | Remove |
 

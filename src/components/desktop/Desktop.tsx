@@ -86,6 +86,14 @@ export function Desktop() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  // Auto-open "Start Here" window after 2 seconds on first load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      openWindow('readme', windowTitles['readme'], windowIcons['readme']);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleIconDoubleClick = (id: string) => {
     openWindow(id, windowTitles[id] || id, windowIcons[id] || 'file');
   };
@@ -95,18 +103,21 @@ export function Desktop() {
       className="desktop-only relative h-screen w-screen overflow-hidden"
       style={{
         background: 'var(--wallpaper-gradient)',
+        backgroundSize: 'var(--wallpaper-size)',
+        backgroundPosition: 'var(--wallpaper-position)',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       {/* Desktop Icons */}
       <div className="absolute inset-0 p-4 pb-16">
         <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(auto-fill, 90px)' }}>
-          {desktopIcons.map((icon) => (
+          {desktopIcons.map((item) => (
             <DesktopIcon
-              key={icon.id}
-              id={icon.id}
-              label={icon.label}
-              icon={icon.icon}
-              onDoubleClick={() => handleIconDoubleClick(icon.id)}
+              key={item.id}
+              id={item.id}
+              label={item.label}
+              icon={item.icon}
+              onDoubleClick={() => handleIconDoubleClick(item.id)}
             />
           ))}
         </div>

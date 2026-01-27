@@ -13,7 +13,7 @@ export interface Experience {
 export const experiences: Experience[] = [
   {
     id: 'healthty',
-    company: 'Healthty',
+    company: 'Healthy',
     role: 'Principal Product Manager, Growth',
     location: 'Austin, TX (Remote)',
     startDate: 'Sep 2025',

@@ -15,6 +15,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface StartMenuProps {
   onClose: () => void;
@@ -78,8 +79,19 @@ export function StartMenu({ onClose }: StartMenuProps) {
     >
       {/* Header */}
       <div className="p-4 border-b border-[var(--border-color)] bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)]">
-        <h2 className="text-lg font-bold text-white">Don Hogan</h2>
-        <p className="text-sm text-white/80">Principal Product Manager – Growth</p>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/images/logo/hoganos-logo.png"
+            alt="HoganOS"
+            width={48}
+            height={48}
+            className="rounded-md"
+          />
+          <div>
+            <h2 className="text-lg font-bold text-white">Don Hogan</h2>
+            <p className="text-sm text-white/80">Principal Product Manager – Growth</p>
+          </div>
+        </div>
       </div>
 
       {/* Menu Items */}

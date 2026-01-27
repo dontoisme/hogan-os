@@ -22,8 +22,10 @@
   --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   --icon-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 
-  /* Wallpaper gradient */
-  --wallpaper-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  /* Wallpaper */
+  --wallpaper-gradient: url('/images/wallpapers/green-mountains.png');
+  --wallpaper-size: cover;
+  --wallpaper-position: center;
 }
 
 [data-theme="light"] {
@@ -43,7 +45,9 @@
   --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   --icon-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-  --wallpaper-gradient: linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #0652dd 100%);
+  --wallpaper-gradient: url('/images/wallpapers/growth-rings.png');
+  --wallpaper-size: cover;
+  --wallpaper-position: center;
 }
 
 [data-theme="retro"] {
@@ -68,6 +72,8 @@
   --icon-shadow: 1px 1px 0 #000000;
 
   --wallpaper-gradient: #008080;
+  --wallpaper-size: auto;
+  --wallpaper-position: center;
 }
 
 @theme inline {
