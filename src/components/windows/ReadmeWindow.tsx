@@ -37,10 +37,10 @@ const fitSections: FitSection[] = [
     icon: Brain,
     requirement: 'Actively uses AI to think better, move faster, and designs products that responsibly leverage AI.',
     evidence: [
-      'At Healthty (2025): Built multi-agent LLM system for clinical workflow automation across Epic, Cerner, Athena',
+      'At Healthty: Multi-agent LLM system for clinical workflows — AI that must be trustworthy, explainable, and compliant',
       'Built this entire portfolio site (HoganOS) with Claude Code in a single session',
       'At ZenBusiness: Integrated Velo AI into front-end tooling, improving funnel starts by 70%',
-      'Use AI daily for discovery, prototyping, code generation, and analysis',
+      'Daily AI practice: discovery, prototyping, code generation, strategic analysis',
       'Strong opinion: AI changes *how* we build, not just *what* we build',
     ],
     verdict: 'strong',
@@ -336,9 +336,10 @@ export function ReadmeWindow() {
                   Why CSR? The Patterns Transfer.
                 </p>
                 <p className="text-sm text-[var(--text-secondary)] mb-3">
-                  Most recently at <span className="text-[var(--accent)]">Healthty</span> (2025), I built AI-powered clinical workflow
-                  automation — a multi-agent LLM system handling APCM billing across Epic, Cerner, and Athena.
-                  The technical and organizational challenges map directly to CSR:
+                  Most recently at <span className="text-[var(--accent)]">Healthty</span> (2025), I was Principal PM for a B2B2C
+                  healthcare platform enabling physician practices to bill CMS (Medicare) for care management. Built multi-agent
+                  LLM workflows across Epic, Cerner, and Athena — where retention = revenue and AI must be trustworthy.
+                  The challenges map directly to CSR:
                 </p>
                 <div className="space-y-2 text-sm">
                   {[

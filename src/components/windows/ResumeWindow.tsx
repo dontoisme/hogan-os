@@ -97,8 +97,8 @@ export function ResumeWindow() {
               </div>
               <ul className="mt-2 text-gray-700 text-sm space-y-1 list-disc list-inside">
                 <li>Built multi-agent LLM system for APCM billing across Epic, Cerner, and Athena EMRs</li>
-                <li>Designed AI workflows for clinical decision support with trustworthy, explainable outputs</li>
-                <li>Navigated CMS compliance requirements while shipping fast in early-stage environment</li>
+                <li>Designed retention-focused B2B2C strategy: patient engagement = billable revenue for practices</li>
+                <li>Coordinated multi-stakeholder product (patients, providers, payers, care managers, CMS)</li>
               </ul>
             </div>
 
