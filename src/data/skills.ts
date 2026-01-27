@@ -1,44 +1,45 @@
 export interface Skill {
   name: string;
-  category: 'language' | 'framework' | 'tool' | 'database' | 'cloud' | 'other';
+  category: 'product' | 'leadership' | 'technical' | 'growth' | 'other';
   level: 'expert' | 'proficient' | 'familiar';
 }
 
 export const skills: Skill[] = [
-  // Languages
-  { name: 'TypeScript', category: 'language', level: 'expert' },
-  { name: 'JavaScript', category: 'language', level: 'expert' },
-  { name: 'Python', category: 'language', level: 'proficient' },
-  { name: 'Go', category: 'language', level: 'familiar' },
-  { name: 'SQL', category: 'language', level: 'proficient' },
-  { name: 'HTML/CSS', category: 'language', level: 'expert' },
+  // Product Management - Expert
+  { name: 'Problem Discovery', category: 'product', level: 'expert' },
+  { name: 'A/B Testing', category: 'product', level: 'expert' },
+  { name: 'AI UX', category: 'product', level: 'expert' },
+  { name: 'Roadmapping', category: 'product', level: 'expert' },
+  { name: 'User Research', category: 'product', level: 'expert' },
+  { name: 'Experimentation', category: 'product', level: 'expert' },
 
-  // Frameworks
-  { name: 'React', category: 'framework', level: 'expert' },
-  { name: 'Next.js', category: 'framework', level: 'expert' },
-  { name: 'Node.js', category: 'framework', level: 'proficient' },
-  { name: 'Flask', category: 'framework', level: 'proficient' },
-  { name: 'Django', category: 'framework', level: 'familiar' },
-  { name: 'React Native', category: 'framework', level: 'proficient' },
-  { name: 'Tailwind CSS', category: 'framework', level: 'expert' },
+  // Leadership - Expert
+  { name: 'Product Strategy', category: 'leadership', level: 'expert' },
+  { name: 'Cross-Functional Leadership', category: 'leadership', level: 'expert' },
+  { name: 'Employee Mentoring', category: 'leadership', level: 'expert' },
+  { name: 'Interdepartmental Growth', category: 'leadership', level: 'expert' },
 
-  // Tools
-  { name: 'Git', category: 'tool', level: 'expert' },
-  { name: 'Docker', category: 'tool', level: 'proficient' },
-  { name: 'Vim', category: 'tool', level: 'proficient' },
-  { name: 'Jest', category: 'tool', level: 'proficient' },
-  { name: 'Webpack', category: 'tool', level: 'proficient' },
+  // Growth - Expert
+  { name: 'Conversion Optimization', category: 'growth', level: 'expert' },
+  { name: 'Funnel Analysis', category: 'growth', level: 'expert' },
+  { name: 'Product-Led Growth', category: 'growth', level: 'expert' },
+  { name: 'Attribution', category: 'growth', level: 'expert' },
+  { name: 'Landing Page Optimization', category: 'growth', level: 'expert' },
 
-  // Databases
-  { name: 'PostgreSQL', category: 'database', level: 'proficient' },
-  { name: 'SQLite', category: 'database', level: 'proficient' },
-  { name: 'MongoDB', category: 'database', level: 'familiar' },
-  { name: 'Redis', category: 'database', level: 'familiar' },
+  // Technical - Proficient
+  { name: 'HTML/CSS/JS', category: 'technical', level: 'proficient' },
+  { name: 'SQL', category: 'technical', level: 'proficient' },
+  { name: 'NoSQL', category: 'technical', level: 'proficient' },
+  { name: 'User Centered Design', category: 'technical', level: 'proficient' },
+  { name: 'Designing for AI', category: 'technical', level: 'proficient' },
+  { name: 'Python', category: 'technical', level: 'familiar' },
+  { name: 'Swift', category: 'technical', level: 'familiar' },
+  { name: 'React/Next.js', category: 'technical', level: 'familiar' },
 
-  // Cloud
-  { name: 'AWS', category: 'cloud', level: 'proficient' },
-  { name: 'Vercel', category: 'cloud', level: 'proficient' },
-  { name: 'Firebase', category: 'cloud', level: 'familiar' },
+  // Other
+  { name: 'Photography', category: 'other', level: 'proficient' },
+  { name: 'Storytelling', category: 'other', level: 'expert' },
+  { name: 'Catching Fish Barehanded', category: 'other', level: 'expert' },
 ];
 
 export const getSkillsByCategory = (category: Skill['category']): Skill[] => {
@@ -48,3 +49,11 @@ export const getSkillsByCategory = (category: Skill['category']): Skill[] => {
 export const getSkillsByLevel = (level: Skill['level']): Skill[] => {
   return skills.filter(s => s.level === level);
 };
+
+export const categories: { id: Skill['category']; label: string }[] = [
+  { id: 'product', label: 'Product Management' },
+  { id: 'growth', label: 'Growth' },
+  { id: 'leadership', label: 'Leadership' },
+  { id: 'technical', label: 'Technical' },
+  { id: 'other', label: 'Other' },
+];

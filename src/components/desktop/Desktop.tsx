@@ -29,14 +29,14 @@ import {
 } from 'lucide-react';
 
 const desktopIcons = [
-  { id: 'readme', label: 'README.txt', icon: ScrollText, row: 0, col: 0 },
-  { id: 'projects', label: 'Projects', icon: FolderOpen, row: 0, col: 1 },
-  { id: 'resume', label: 'Resume', icon: FileText, row: 1, col: 0 },
-  { id: 'experience', label: 'Experience', icon: Briefcase, row: 1, col: 1 },
+  { id: 'readme', label: 'Start Here.txt', icon: ScrollText, row: 0, col: 0 },
+  { id: 'projects', label: 'Side Quests', icon: FolderOpen, row: 0, col: 1 },
+  { id: 'resume', label: 'Hire Me.pdf', icon: FileText, row: 1, col: 0 },
+  { id: 'experience', label: 'The Journey', icon: Briefcase, row: 1, col: 1 },
   { id: 'job-journal', label: 'Job Journal', icon: BarChart3, row: 2, col: 0 },
-  { id: 'contact', label: 'Contact', icon: Mail, row: 2, col: 1 },
-  { id: 'about', label: 'About Me', icon: User, row: 3, col: 0 },
-  { id: 'settings', label: 'Settings', icon: Settings, row: 3, col: 1 },
+  { id: 'contact', label: 'Say Hi', icon: Mail, row: 2, col: 1 },
+  { id: 'about', label: 'The Dude', icon: User, row: 3, col: 0 },
+  { id: 'settings', label: 'Preferences', icon: Settings, row: 3, col: 1 },
 ];
 
 const windowComponents: Record<string, React.ComponentType> = {
@@ -51,14 +51,14 @@ const windowComponents: Record<string, React.ComponentType> = {
 };
 
 const windowTitles: Record<string, string> = {
-  readme: 'README.txt',
-  resume: 'Resume',
-  projects: 'Projects',
-  experience: 'Experience',
-  contact: 'Contact',
-  settings: 'Settings',
+  readme: 'Start Here.txt',
+  resume: 'Hire Me.pdf',
+  projects: 'Side Quests',
+  experience: 'The Journey',
+  contact: 'Say Hi',
+  settings: 'Preferences',
   'job-journal': 'Job Journal',
-  about: 'About Me',
+  about: 'The Dude',
 };
 
 const windowIcons: Record<string, string> = {

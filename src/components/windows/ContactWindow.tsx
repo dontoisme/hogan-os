@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Github, Linkedin, Send, Check, ExternalLink } from 'lucide-react';
+import { Mail, Github, Linkedin, Send, Check, ExternalLink, Twitter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function ContactWindow() {
@@ -25,36 +25,43 @@ export function ContactWindow() {
   const contactLinks = [
     {
       label: 'Email',
-      value: 'don@example.com',
+      value: 'don.r.hogan@gmail.com',
       icon: Mail,
-      href: 'mailto:don@example.com',
+      href: 'mailto:don.r.hogan@gmail.com',
     },
     {
       label: 'GitHub',
-      value: '@donhogan',
+      value: '@dontoisme',
       icon: Github,
-      href: 'https://github.com/donhogan',
+      href: 'https://github.com/dontoisme',
     },
     {
       label: 'LinkedIn',
-      value: 'in/donhogan',
+      value: 'in/dhogan',
       icon: Linkedin,
-      href: 'https://linkedin.com/in/donhogan',
+      href: 'https://www.linkedin.com/in/dhogan/',
+    },
+    {
+      label: 'X / Twitter',
+      value: '@donto',
+      icon: Twitter,
+      href: 'https://x.com/donto',
     },
   ];
 
   return (
     <div className="h-full p-6 overflow-auto">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Get in Touch</h1>
+        <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Let&apos;s Connect</h1>
         <p className="text-[var(--text-secondary)] mb-6">
-          Have a question or want to work together? Feel free to reach out!
+          Looking for a Growth PM? Want to talk about A/B testing, fish catching, or Douglas Adams?
+          I&apos;m always down to chat.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Contact Links */}
           <div className="space-y-3">
-            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Connect</h2>
+            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Find Me</h2>
             {contactLinks.map((link) => (
               <a
                 key={link.label}
@@ -133,7 +140,7 @@ export function ContactWindow() {
                     'text-[var(--text-primary)] placeholder-[var(--text-muted)]',
                     'focus:outline-none focus:border-[var(--accent)]'
                   )}
-                  placeholder="Your message..."
+                  placeholder="What's on your mind?"
                   rows={4}
                   required
                 />

@@ -6,14 +6,16 @@ import { X, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const tips = [
-  "Hi! I'm Clippy! It looks like you're viewing a portfolio. Would you like help with that?",
-  "Pro tip: Try double-clicking the icons to open windows!",
-  "Did you know? You can drag windows around by their title bars!",
-  "Fun fact: There's a secret code hidden in this site. Can you find it?",
-  "Looking for my resume? Just double-click the Resume icon!",
-  "Want to see my projects? The Projects folder has everything!",
-  "You can change the theme in Settings. Try the retro mode!",
-  "Thanks for visiting! Feel free to reach out via the Contact window.",
+  "Hi! I'm Clippy! It looks like you're viewing a portfolio. Don't Panic.",
+  "Pro tip: Try double-clicking the icons to open windows! It's not rocket science. Well, it's not even regular science.",
+  "Did you know? You can drag windows around by their title bars! Almost as satisfying as catching fish barehanded.",
+  "Fun fact: There's a secret code hidden in this site. The answer might be 42.",
+  "Looking to hire a Growth PM who actually runs experiments? Check out the Resume!",
+  "Want to see real projects? The Projects folder has Job Journal, Darwin, and more.",
+  "Try the retro theme in Settings. It's like nostalgia, but with better conversion rates.",
+  "I've helped improve experimentation velocity by 600%. Let me help you navigate this site.",
+  "Thanks for visiting! I'm always down to chat about A/B testing, fish catching, or Douglas Adams.",
+  "If you're hiring, I once increased day 14 activation from 8% to 25%. Just saying.",
 ];
 
 export function Clippy() {

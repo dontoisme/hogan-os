@@ -31,8 +31,8 @@ const menuItems = [
 ];
 
 const externalLinks = [
-  { label: 'GitHub', icon: Github, url: 'https://github.com/donhogan' },
-  { label: 'LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/donhogan' },
+  { label: 'GitHub', icon: Github, url: 'https://github.com/dontoisme' },
+  { label: 'LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/dhogan' },
 ];
 
 export function StartMenu({ onClose }: StartMenuProps) {
@@ -79,7 +79,7 @@ export function StartMenu({ onClose }: StartMenuProps) {
       {/* Header */}
       <div className="p-4 border-b border-[var(--border-color)] bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)]">
         <h2 className="text-lg font-bold text-white">Don Hogan</h2>
-        <p className="text-sm text-white/80">Software Engineer</p>
+        <p className="text-sm text-white/80">Principal Product Manager – Growth</p>
       </div>
 
       {/* Menu Items */}

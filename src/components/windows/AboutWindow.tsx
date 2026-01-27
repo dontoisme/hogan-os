@@ -1,13 +1,10 @@
 'use client';
 
-import { skills, getSkillsByLevel } from '@/data/skills';
+import { skills, getSkillsByCategory, categories } from '@/data/skills';
 import { cn } from '@/lib/utils';
-import { User, MapPin, Coffee, Code, Gamepad, Music } from 'lucide-react';
+import { User, MapPin, Bike, Camera, Mountain, Gamepad2, Fish } from 'lucide-react';
 
 export function AboutWindow() {
-  const expertSkills = getSkillsByLevel('expert');
-  const proficientSkills = getSkillsByLevel('proficient');
-
   return (
     <div className="h-full p-6 overflow-auto">
       <div className="max-w-2xl mx-auto">
@@ -23,10 +20,13 @@ export function AboutWindow() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-[var(--text-primary)]">Don Hogan</h1>
-            <p className="text-lg text-[var(--accent)] mb-2">Senior Software Engineer</p>
+            <p className="text-lg text-[var(--accent)] mb-2">Principal Product Manager – Growth</p>
             <p className="flex items-center gap-2 text-[var(--text-muted)]">
               <MapPin className="w-4 h-4" />
               Austin, TX
+            </p>
+            <p className="text-sm text-[var(--text-muted)] mt-1 italic">
+              &quot;Just a dude having fun.&quot;
             </p>
           </div>
         </div>
@@ -36,60 +36,69 @@ export function AboutWindow() {
           <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">About Me</h2>
           <div className="space-y-4 text-[var(--text-secondary)]">
             <p>
-              I'm a full-stack software engineer with a passion for building products that make people's
-              lives easier. With 7+ years of experience in web development, I specialize in creating
-              intuitive user interfaces and robust backend systems.
+              I&apos;m a Growth Product Leader with a track record of turning experimentation and data
+              into real business results. I&apos;ve spent 8+ years helping companies like Indeed,
+              Mattermost, and ZenBusiness figure out what makes users tick and how to make
+              products they actually want to use.
             </p>
             <p>
-              When I'm not coding, you'll find me tinkering with side projects, exploring new
-              technologies, or contributing to open source. I believe in writing clean, maintainable
-              code and sharing knowledge with the developer community.
+              I describe myself as a hobbyist who tries to make a living solving big problems.
+              When I&apos;m not running A/B tests or optimizing funnels, you&apos;ll find me building
+              side projects with Claude Code, riding my bike on Austin trails, or referencing
+              Douglas Adams at inappropriate moments.
+            </p>
+            <p>
+              Former rock climbing guide. Can catch fish barehanded. Will definitely ask you
+              about that if we meet.
             </p>
           </div>
         </section>
 
-        {/* Skills */}
+        {/* Skills by Category */}
         <section className="mb-8">
           <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Skills</h2>
+          <div className="space-y-4">
+            {categories.map((category) => {
+              const categorySkills = getSkillsByCategory(category.id);
+              if (categorySkills.length === 0) return null;
 
-          <div className="mb-4">
-            <p className="text-sm text-[var(--text-muted)] mb-2">Expert</p>
-            <div className="flex flex-wrap gap-2">
-              {expertSkills.map((skill) => (
-                <span
-                  key={skill.name}
-                  className="px-3 py-1 bg-[var(--accent)]/20 text-[var(--accent)] rounded-md text-sm font-medium"
-                >
-                  {skill.name}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <p className="text-sm text-[var(--text-muted)] mb-2">Proficient</p>
-            <div className="flex flex-wrap gap-2">
-              {proficientSkills.map((skill) => (
-                <span
-                  key={skill.name}
-                  className="px-3 py-1 bg-[var(--bg-tertiary)] text-[var(--text-secondary)] rounded-md text-sm"
-                >
-                  {skill.name}
-                </span>
-              ))}
-            </div>
+              return (
+                <div key={category.id}>
+                  <p className="text-sm text-[var(--text-muted)] mb-2">{category.label}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {categorySkills.map((skill) => (
+                      <span
+                        key={skill.name}
+                        className={cn(
+                          'px-3 py-1 rounded-md text-sm',
+                          skill.level === 'expert'
+                            ? 'bg-[var(--accent)]/20 text-[var(--accent)] font-medium'
+                            : skill.level === 'proficient'
+                            ? 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)]'
+                            : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'
+                        )}
+                      >
+                        {skill.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
         {/* Interests */}
         <section>
-          <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Interests</h2>
+          <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">When I&apos;m Not Working</h2>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { icon: Code, label: 'Open Source', description: 'Contributing to projects I use' },
-              { icon: Coffee, label: 'Coffee', description: 'Fuel for late-night coding' },
-              { icon: Gamepad, label: 'Gaming', description: 'Retro games and indie titles' },
-              { icon: Music, label: 'Music', description: 'Coding playlists and vinyl' },
+              { icon: Bike, label: 'Biking', description: 'Mountain and road, Austin trails' },
+              { icon: Camera, label: 'Photography', description: 'Finding beauty in unexpected places' },
+              { icon: Mountain, label: 'Outdoors', description: 'Former climbing guide, backpacker' },
+              { icon: Gamepad2, label: 'Gaming', description: 'SNES classics and indie titles' },
+              { icon: Fish, label: 'Fishing', description: 'Ask me about catching them barehanded' },
+              { icon: User, label: 'Storytelling', description: 'Connecting people through stories' },
             ].map((interest) => (
               <div
                 key={interest.label}
