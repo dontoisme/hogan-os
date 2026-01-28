@@ -37,7 +37,7 @@ const fitSections: FitSection[] = [
     icon: Brain,
     requirement: 'Actively uses AI to think better, move faster, and designs products that responsibly leverage AI.',
     evidence: [
-      'At Healthy: Multi-agent LLM system for clinical workflows — AI that must be trustworthy, explainable, and compliant',
+      'At stealth AI-health startup: Multi-agent LLM system for clinical workflows — AI that must be trustworthy, explainable, and compliant',
       'Built this entire portfolio site (HoganOS) with Claude Code in a single session',
       'At ZenBusiness: Integrated Velo AI into front-end tooling, improving funnel starts by 70%',
       'Daily AI practice: discovery, prototyping, code generation, strategic analysis',
@@ -107,7 +107,7 @@ const fitSections: FitSection[] = [
     icon: Briefcase,
     requirement: 'PM experience in SaaS with complex, platform-oriented products.',
     evidence: [
-      '8+ years: Healthy, ZenBusiness, Wellcore, Mattermost, Indeed, Clearhead/Accenture',
+      '8+ years: AI-Health Startup, ZenBusiness, Wellcore, Mattermost, Indeed, Clearhead/Accenture',
       'Principal/Staff level at multiple companies',
       'Platform products: Multi-agent AI systems, EHR platforms, experimentation infrastructure',
       'Enterprise + SMB experience across B2B and B2C',
@@ -173,59 +173,49 @@ export function ReadmeWindow() {
   };
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
-      {/* Hero Header */}
-      <div className="p-6 bg-gradient-to-br from-[var(--accent)]/20 via-purple-500/10 to-pink-500/10 border-b border-[var(--border-color)]">
-        <div className="flex items-start gap-4">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--accent)] to-purple-500 flex items-center justify-center shrink-0">
-            <Target className="w-7 h-7 text-white" />
+    <div className="h-full overflow-auto">
+      {/* Compact Header */}
+      <div className="p-4 bg-gradient-to-br from-[var(--accent)]/20 via-purple-500/10 to-pink-500/10 border-b border-[var(--border-color)]">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--accent)] to-purple-500 flex items-center justify-center shrink-0">
+            <Target className="w-5 h-5 text-white" />
           </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-xl font-bold text-[var(--text-primary)]">Don Hogan</h1>
-              <span className="text-xl">→</span>
-              <h1 className="text-xl font-bold text-[var(--accent)]">Bonterra</h1>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-bold text-[var(--text-primary)]">Don Hogan</h1>
+              <span className="text-lg">→</span>
+              <h1 className="text-lg font-bold text-[var(--accent)]">Bonterra</h1>
             </div>
-            <p className="text-[var(--text-secondary)] text-sm mb-3">
+            <p className="text-[var(--text-secondary)] text-xs">
               Principal Product Manager, CSR — Role Fit Analysis
             </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
-                <CheckCircle2 className="w-3 h-3 inline mr-1" />
-                Strong Overall Fit
-              </span>
-              <span className="px-2 py-1 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
-                8+ years PM
-              </span>
-              <span className="px-2 py-1 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
-                AI-Native
-              </span>
-              <span className="px-2 py-1 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
-                Growth Expert
-              </span>
-            </div>
           </div>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-3">
+          <span className="px-2 py-0.5 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
+            <CheckCircle2 className="w-3 h-3 inline mr-1" />
+            Strong Overall Fit
+          </span>
+          <span className="px-2 py-0.5 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
+            12+ years PM
+          </span>
+          <span className="px-2 py-0.5 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
+            AI-Native
+          </span>
+          <span className="px-2 py-0.5 text-xs rounded-full bg-[var(--bg-tertiary)] text-[var(--text-muted)]">
+            Growth Expert
+          </span>
+        </div>
+        <div className="flex items-start gap-2 text-xs text-[var(--text-secondary)] bg-[var(--bg-secondary)]/50 rounded p-2">
+          <Sparkles className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
+          <p>
+            <span className="font-medium text-[var(--text-primary)]">TL;DR:</span> Growth PM with 12+ years building AI-powered, outcome-focused products. Track record of 10x improvements in experimentation velocity, activation rates, and revenue. Technically fluent enough to build this site with Claude Code. Mission-driven enough to care about increasing the giving rate.
+          </p>
         </div>
       </div>
 
-      {/* Quick Summary */}
-      <div className="p-4 border-b border-[var(--border-color)] bg-[var(--bg-secondary)]">
-        <div className="flex items-start gap-3">
-          <Sparkles className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
-          <div className="text-sm text-[var(--text-secondary)]">
-            <p className="font-medium text-[var(--text-primary)] mb-1">TL;DR</p>
-            <p>
-              Growth PM with 8+ years building AI-powered, outcome-focused products.
-              Track record of 10x improvements in experimentation velocity, activation rates, and revenue.
-              Technically fluent enough to build this site with Claude Code. Mission-driven enough to care about
-              increasing the giving rate. Pragmatic enough to ship.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-auto">
+      {/* Main Content */}
+      <div>
         {/* Qualification Sections */}
         <div className="p-4">
           <h2 className="text-sm font-semibold text-[var(--text-muted)] uppercase tracking-wide mb-3">
@@ -336,7 +326,7 @@ export function ReadmeWindow() {
                   Why CSR? The Patterns Transfer.
                 </p>
                 <p className="text-sm text-[var(--text-secondary)] mb-3">
-                  Most recently at <span className="text-[var(--accent)]">Healthy</span> (2025), I was Principal PM for a B2B2C
+                  Most recently at <span className="text-[var(--accent)]">a stealth AI-health startup</span> (2025), I was Principal PM for a B2B2C
                   healthcare platform enabling physician practices to bill CMS (Medicare) for care management. Built multi-agent
                   LLM workflows across Epic, Cerner, and Athena — where retention = revenue and AI must be trustworthy.
                   The challenges map directly to CSR:
