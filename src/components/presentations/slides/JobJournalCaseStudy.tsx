@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {
   Brain,
   Layers,
@@ -21,8 +22,25 @@ import {
   Monitor,
   Package,
   Sparkles,
+  RotateCcw,
+  type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { usePresentationContent } from '@/hooks/usePresentationContent';
+import {
+  extractHeading,
+  extractSubheading,
+  extractBlockquote,
+  extractItalic,
+  extractListItems,
+  extractParagraphs,
+  extractCommaSeparated,
+  extractTableRows,
+  parseListItem,
+  parseTradeoffItem,
+  parseRoadmapItem,
+  parseWorkflowItem,
+} from '@/data/presentation-content';
 
 /* ------------------------------------------------------------------ */
 /*  Shared layout wrapper                                              */
@@ -38,7 +56,7 @@ function SlideLayout({
   return (
     <div
       className={cn(
-        'h-full flex flex-col items-center justify-center p-8',
+        'h-full flex flex-col items-center justify-center p-6',
         className,
       )}
     >
@@ -48,25 +66,174 @@ function SlideLayout({
 }
 
 /* ------------------------------------------------------------------ */
-/*  SLIDE 1 — Title                                                    */
+/*  Screenshot helpers                                                  */
 /* ------------------------------------------------------------------ */
 
+function ScreenshotFrame({
+  src,
+  alt,
+  caption,
+  className,
+}: {
+  src: string;
+  alt: string;
+  caption?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        'w-full rounded-lg overflow-hidden border border-[var(--border-color)] bg-[var(--bg-tertiary)]',
+        className,
+      )}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        width={800}
+        height={450}
+        className="w-full h-auto"
+      />
+      {caption && (
+        <p className="text-xs text-[var(--text-muted)] px-3 py-2 border-t border-[var(--border-color)]">
+          {caption}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function ScreenshotPlaceholder({ label }: { label: string }) {
+  return (
+    <div className="w-full h-48 rounded-lg border-2 border-dashed border-[var(--border-color)] flex items-center justify-center bg-[var(--bg-tertiary)]">
+      <span className="text-sm text-[var(--text-muted)]">
+        Screenshot: {label}
+      </span>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Demo slide layout                                                   */
+/* ------------------------------------------------------------------ */
+
+function DemoSlideLayout({
+  problem,
+  problemIcon: Icon,
+  problemColor,
+  problemBg,
+  solution,
+  screenshotSrc,
+  screenshotAlt,
+  screenshotCaption,
+  children,
+}: {
+  problem: string;
+  problemIcon: LucideIcon;
+  problemColor: string;
+  problemBg: string;
+  solution: string;
+  screenshotSrc?: string;
+  screenshotAlt: string;
+  screenshotCaption?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <SlideLayout className="items-start max-w-2xl mx-auto">
+      <div className="w-full flex gap-3 p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] mb-3">
+        <div
+          className={cn(
+            'w-9 h-9 rounded-lg flex items-center justify-center shrink-0',
+            problemBg,
+          )}
+        >
+          <Icon className={cn('w-4 h-4', problemColor)} />
+        </div>
+        <p className="text-sm text-[var(--text-secondary)] leading-relaxed self-center">
+          {problem}
+        </p>
+      </div>
+      <p className="text-sm text-[var(--text-primary)] font-medium mb-3 px-1">
+        {solution}
+      </p>
+      {screenshotSrc ? (
+        <ScreenshotFrame
+          src={screenshotSrc}
+          alt={screenshotAlt}
+          caption={screenshotCaption}
+        />
+      ) : (
+        <ScreenshotPlaceholder label={screenshotAlt} />
+      )}
+      {children}
+    </SlideLayout>
+  );
+}
+
+/* ================================================================== */
+/*  Icon / color maps (structural — not editable via markdown)          */
+/* ================================================================== */
+
+const brutalIcons = [Clock, AlertTriangle, RotateCcw];
+const brutalColors = ['text-red-400', 'text-yellow-400', 'text-blue-400'];
+const brutalBgs = ['bg-red-500/20', 'bg-yellow-500/20', 'bg-blue-500/20'];
+
+const pillIcons = [Shield, Zap, UserCheck];
+
+const workflowIcons: Record<string, LucideIcon> = {
+  '/interview': Terminal,
+  '/jobs': Search,
+  '/apply': FileText,
+  '/greenhouse': Radio,
+};
+
+const principleIcons = [Shield, Zap, UserCheck];
+
+const tradeoffIcons = [Lock, Database, Monitor, Package];
+
+const roadmapColors: Record<string, string> = {
+  Designed: 'bg-blue-500/20 text-blue-400',
+  Planned: 'bg-yellow-500/20 text-yellow-400',
+  'In Progress': 'bg-green-500/20 text-green-400',
+  Vision: 'bg-purple-500/20 text-purple-400',
+};
+
+/* ================================================================== */
+/*  ACT 1: THE PAIN                                                    */
+/* ================================================================== */
+
 function TitleSlide() {
+  const sections = usePresentationContent();
+  const s = sections['title'] || '';
+  const heading = extractHeading(s) || 'Job Journal';
+  const subtitle = extractSubheading(s) || 'From Career Chaos to Corpus-Driven Clarity';
+  const paras = extractParagraphs(s);
+
   return (
     <SlideLayout>
       <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--accent)] to-purple-500 flex items-center justify-center mb-6">
         <Brain className="w-10 h-10 text-white" />
       </div>
       <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2 text-center">
-        Job Journal
+        {heading}
       </h1>
-      <p className="text-xl text-[var(--text-secondary)] mb-6 text-center">
-        An AI-Native Product Case Study
+      <p className="text-xl text-[var(--text-secondary)] mb-2 text-center">
+        {subtitle}
       </p>
+      {paras[0] && (
+        <p className="text-sm text-[var(--text-muted)] mb-6 text-center max-w-md">
+          {paras[0]}
+        </p>
+      )}
       <div className="flex items-center gap-3 text-sm text-[var(--text-muted)]">
-        <span>Don Hogan</span>
-        <span className="text-[var(--border-color)]">|</span>
-        <span>February 2026</span>
+        {(paras[1] || 'Don Hogan | February 2026').split('|').map((part, i, arr) => (
+          <span key={i} className="flex items-center gap-3">
+            {part.trim()}
+            {i < arr.length - 1 && (
+              <span className="text-[var(--border-color)]">|</span>
+            )}
+          </span>
+        ))}
       </div>
       <span className="mt-4 px-3 py-1 rounded-full text-xs bg-[var(--accent)]/20 text-[var(--accent)]">
         Built with Claude Code
@@ -75,126 +242,166 @@ function TitleSlide() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  SLIDE 2 — The Problem                                              */
-/* ------------------------------------------------------------------ */
+function BrutalMathSlide() {
+  const sections = usePresentationContent();
+  const s = sections['brutal-math'] || '';
+  const heading = extractHeading(s) || 'The Best Practice That Breaks You';
+  const paras = extractParagraphs(s);
+  const subtitle = paras[0] || '';
+  const items = extractListItems(s).map(parseListItem);
+  const quote = extractBlockquote(s);
 
-const problems = [
-  {
-    icon: Layers,
-    title: 'Fragmentation',
-    text: 'Applications scattered across 15 tabs, 4 email threads, and a spreadsheet you forgot to update. No single source of truth.',
-    color: 'text-blue-400',
-    bg: 'bg-blue-500/20',
-  },
-  {
-    icon: AlertTriangle,
-    title: 'AI Hallucination',
-    text: '"Spearheaded cross-functional synergies" — you never said that. Resume builders fabricate achievements.',
-    color: 'text-yellow-400',
-    bg: 'bg-yellow-500/20',
-  },
-  {
-    icon: Clock,
-    title: 'Time Sink',
-    text: 'Customizing each resume by hand. Checking job boards daily. Losing track of where you applied and when.',
-    color: 'text-red-400',
-    bg: 'bg-red-500/20',
-  },
-];
-
-function ProblemSlide() {
   return (
     <SlideLayout className="items-start max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-1">
-        The Problem
+        {heading}
       </h2>
-      <p className="text-sm text-[var(--text-muted)] mb-6">
-        Job searching is broken in three specific ways
-      </p>
-      <div className="w-full space-y-3">
-        {problems.map((p) => (
+      {subtitle && (
+        <p className="text-sm text-[var(--text-muted)] mb-4">{subtitle}</p>
+      )}
+      <div className="w-full space-y-2">
+        {items.map((item, i) => (
           <div
-            key={p.title}
-            className="flex gap-4 p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]"
+            key={i}
+            className="flex gap-3 p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]"
           >
             <div
               className={cn(
                 'w-10 h-10 rounded-lg flex items-center justify-center shrink-0',
-                p.bg,
+                brutalBgs[i] || 'bg-[var(--accent)]/20',
               )}
             >
-              <p.icon className={cn('w-5 h-5', p.color)} />
+              {(() => {
+                const IconComp = brutalIcons[i] || Clock;
+                return (
+                  <IconComp
+                    className={cn('w-5 h-5', brutalColors[i] || 'text-[var(--accent)]')}
+                  />
+                );
+              })()}
             </div>
             <div>
               <h3 className="font-semibold text-[var(--text-primary)]">
-                {p.title}
+                {item.title}
               </h3>
               <p className="text-sm text-[var(--text-secondary)] mt-0.5">
-                {p.text}
+                {item.text}
               </p>
             </div>
           </div>
         ))}
       </div>
+      {quote && (
+        <div className="w-full mt-3 p-3 rounded-lg border-l-4 border-[var(--accent)] bg-[var(--bg-secondary)]">
+          <p className="text-sm text-[var(--text-secondary)] italic">
+            &ldquo;{quote}&rdquo;
+          </p>
+        </div>
+      )}
     </SlideLayout>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  SLIDE 3 — Design Principles                                        */
-/* ------------------------------------------------------------------ */
+function EmotionalCycleSlide() {
+  const sections = usePresentationContent();
+  const s = sections['emotional-cycle'] || '';
+  const heading = extractHeading(s) || 'The Real Cost';
+  const paras = extractParagraphs(s);
+  const subtitle = paras[0] || '';
+  const steps = extractCommaSeparated(s);
+  const statement = extractItalic(s);
 
-const principles = [
-  {
-    icon: Shield,
-    title: 'Responsible AI',
-    text: 'Your words, your corpus. AI assists selection, not fabrication.',
-  },
-  {
-    icon: Zap,
-    title: 'Strong Defaults',
-    text: 'One command to score a JD. One to generate a resume. Works out of the box.',
-  },
-  {
-    icon: UserCheck,
-    title: 'User Control',
-    text: 'You review every bullet. You approve every resume. Human in the loop, always.',
-  },
-];
+  return (
+    <SlideLayout className="max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-1">
+        {heading}
+      </h2>
+      {subtitle && (
+        <p className="text-sm text-[var(--text-muted)] mb-8">{subtitle}</p>
+      )}
+      {steps.length > 0 && (
+        <div className="w-full flex flex-wrap items-center justify-center gap-1 mb-4 p-5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+          {steps.map((step, i) => (
+            <div key={step} className="flex items-center gap-1">
+              <span
+                className={cn(
+                  'px-3 py-1.5 rounded text-xs font-medium',
+                  i === steps.length - 1
+                    ? 'bg-red-500/20 text-red-400'
+                    : i === 1
+                      ? 'bg-green-500/20 text-green-400'
+                      : 'bg-[var(--accent)]/15 text-[var(--accent)]',
+                )}
+              >
+                {step}
+              </span>
+              <ArrowRight className="w-3 h-3 text-[var(--text-muted)]" />
+            </div>
+          ))}
+          <span className="px-2 py-1 rounded text-xs font-medium text-[var(--text-muted)]">
+            <RotateCcw className="w-4 h-4" />
+          </span>
+        </div>
+      )}
+      {statement && (
+        <p className="text-xl italic text-[var(--text-secondary)] text-center mt-6 max-w-md leading-relaxed">
+          {statement}
+        </p>
+      )}
+    </SlideLayout>
+  );
+}
 
-function PrinciplesSlide() {
+/* ================================================================== */
+/*  ACT 2: THE INSIGHT                                                 */
+/* ================================================================== */
+
+function KnowledgeExistsSlide() {
+  const sections = usePresentationContent();
+  const s = sections['knowledge-exists'] || '';
+  const heading = extractHeading(s) || 'You Already Know Your Stories';
+  const paras = extractParagraphs(s);
+  const items = extractListItems(s).map(parseListItem);
+
   return (
     <SlideLayout className="max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-6">
-        Design Principles
+        {heading}
       </h2>
-
-      {/* Hero quote */}
       <div className="w-full p-5 rounded-lg border-l-4 border-[var(--accent)] bg-[var(--bg-secondary)] mb-6">
-        <p className="text-xl font-bold text-[var(--accent)] mb-1">
-          &ldquo;SELECT, don&rsquo;t COMPOSE&rdquo;
-        </p>
-        <p className="text-sm text-[var(--text-secondary)]">
-          Every resume bullet traces back to something you actually said. No
-          hallucinated achievements. No fabricated metrics.
-        </p>
+        {paras[0] && (
+          <p className="text-base text-[var(--text-primary)] leading-relaxed">
+            {paras[0]}
+          </p>
+        )}
+        {paras[1] && (
+          <p className="text-sm text-[var(--text-secondary)] mt-2">
+            {paras[1]}
+          </p>
+        )}
       </div>
-
-      {/* Three principles */}
-      <div className="w-full grid grid-cols-3 gap-3">
-        {principles.map((p) => (
+      <div className="w-full grid grid-cols-2 gap-3">
+        {items.slice(0, 2).map((item, i) => (
           <div
-            key={p.title}
-            className="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] text-center"
+            key={i}
+            className={cn(
+              'p-4 rounded-lg border',
+              i === 0
+                ? 'bg-red-500/10 border-red-500/20'
+                : 'bg-green-500/10 border-green-500/20',
+            )}
           >
-            <div className="w-10 h-10 rounded-lg bg-[var(--accent)]/20 flex items-center justify-center mx-auto mb-3">
-              <p.icon className="w-5 h-5 text-[var(--accent)]" />
-            </div>
-            <h3 className="font-semibold text-[var(--text-primary)] text-sm mb-1">
-              {p.title}
+            <h3
+              className={cn(
+                'font-semibold text-sm mb-2',
+                i === 0 ? 'text-red-400' : 'text-green-400',
+              )}
+            >
+              {item.title}
             </h3>
-            <p className="text-xs text-[var(--text-muted)]">{p.text}</p>
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+              {item.text}
+            </p>
           </div>
         ))}
       </div>
@@ -202,66 +409,76 @@ function PrinciplesSlide() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  SLIDE 4 — AI-Native UX                                            */
-/* ------------------------------------------------------------------ */
+function CoreIdeaSlide() {
+  const sections = usePresentationContent();
+  const s = sections['core-idea'] || '';
+  const heading = extractHeading(s) || '"SELECT, don\'t COMPOSE"';
+  const paras = extractParagraphs(s);
+  const pills = extractListItems(s);
 
-const workflows = [
-  {
-    cmd: '/interview',
-    desc: 'Mine your career history conversationally',
-    icon: Terminal,
-  },
-  {
-    cmd: '/jobs',
-    desc: 'Search and discover opportunities',
-    icon: Search,
-  },
-  {
-    cmd: '/apply',
-    desc: 'Score JD fit, generate resume, track application',
-    icon: FileText,
-  },
-  {
-    cmd: '/greenhouse',
-    desc: 'Poll company job boards automatically',
-    icon: Radio,
-  },
-];
+  return (
+    <SlideLayout className="max-w-xl mx-auto">
+      <div className="w-full p-6 rounded-lg border-l-4 border-[var(--accent)] bg-[var(--bg-secondary)] mb-8">
+        <p className="text-2xl font-bold text-[var(--accent)] mb-2">
+          {heading}
+        </p>
+        {paras[0] && (
+          <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+            {paras[0]}
+          </p>
+        )}
+      </div>
+      <div className="w-full flex justify-center gap-3 flex-wrap">
+        {pills.map((pill, i) => {
+          const IconComp = pillIcons[i] || Shield;
+          return (
+            <div
+              key={i}
+              className="flex items-center gap-2 px-3 py-2 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20"
+            >
+              <IconComp className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <span className="text-xs text-[var(--accent)] font-medium">
+                {pill}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </SlideLayout>
+  );
+}
 
-function AINativeSlide() {
+/* ================================================================== */
+/*  ACT 3: ENTER JOB JOURNAL                                          */
+/* ================================================================== */
+
+function ProductIntroSlide() {
+  const sections = usePresentationContent();
+  const s = sections['product-intro'] || '';
+  const heading = extractHeading(s) || 'Enter Job Journal';
+  const paras = extractParagraphs(s);
+  const subtitle = paras[0] || '';
+  const rawItems = extractListItems(s).map(parseWorkflowItem);
+  const stats = extractTableRows(s);
+
   return (
     <SlideLayout className="max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-1">
-        AI-Native UX
+        {heading}
       </h2>
-      <p className="text-sm text-[var(--text-muted)] mb-6">
-        Claude Code is the primary interface — not just a helper
-      </p>
-
-      {/* Stat callout */}
-      <div className="w-full flex gap-3 mb-6">
-        <div className="flex-1 p-3 rounded-lg bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-center">
-          <p className="text-2xl font-bold text-[var(--accent)]">2,080</p>
-          <p className="text-xs text-[var(--text-muted)]">
-            lines of skill prompts
-          </p>
-        </div>
-        <div className="flex-1 p-3 rounded-lg bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-center">
-          <p className="text-2xl font-bold text-[var(--accent)]">4</p>
-          <p className="text-xs text-[var(--text-muted)]">
-            Claude Code workflows
-          </p>
-        </div>
-      </div>
-
-      {/* Workflow pipeline */}
-      <div className="w-full space-y-2">
-        {workflows.map((w, i) => (
-          <div key={w.cmd} className="flex items-center gap-3">
-            <div className="flex items-center gap-2 w-full p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+      {subtitle && (
+        <p className="text-sm text-[var(--text-muted)] mb-6">{subtitle}</p>
+      )}
+      <div className="w-full space-y-2 mb-6">
+        {rawItems.map((w) => {
+          const IconComp = workflowIcons[w.cmd] || Terminal;
+          return (
+            <div
+              key={w.cmd}
+              className="flex items-center gap-2 w-full p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]"
+            >
               <div className="w-8 h-8 rounded bg-[var(--bg-tertiary)] flex items-center justify-center shrink-0">
-                <w.icon className="w-4 h-4 text-[var(--text-muted)]" />
+                <IconComp className="w-4 h-4 text-[var(--text-muted)]" />
               </div>
               <code className="text-sm font-mono text-[var(--accent)] shrink-0">
                 {w.cmd}
@@ -271,90 +488,278 @@ function AINativeSlide() {
                 {w.desc}
               </span>
             </div>
-            {i < workflows.length - 1 && (
-              <div className="w-0.5 h-2 bg-[var(--border-color)] ml-4 shrink-0 hidden" />
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
-
-      <p className="text-xs text-[var(--text-muted)] mt-4 italic">
-        The CLI exists for automation. Claude is the UX.
-      </p>
+      {stats.length > 0 && (
+        <div className="w-full flex gap-3">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="flex-1 p-3 rounded-lg bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-center"
+            >
+              <p className="text-xl font-bold text-[var(--accent)]">
+                {stat.value}
+              </p>
+              <p className="text-xs text-[var(--text-muted)]">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </SlideLayout>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  SLIDE 5 — System Architecture                                      */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/*  ACT 4: DEMO                                                        */
+/* ================================================================== */
 
-const pipelineSteps = [
-  'Interview',
-  'Corpus',
-  'Discovery',
-  'Scoring',
-  'Generation',
-  'Tracking',
-  'Analytics',
-];
+function useDemoContent(sectionId: string) {
+  const sections = usePresentationContent();
+  const s = sections[sectionId] || '';
+  const paras = extractParagraphs(s);
+  const caption = extractBlockquote(s);
+  return {
+    problem: paras[0] || '',
+    solution: paras[1] || '',
+    caption: caption || undefined,
+  };
+}
 
-const stats = [
-  { value: '11,500', label: 'Lines of Python' },
-  { value: '16', label: 'SQLite Tables' },
-  { value: '13', label: 'Modules' },
-  { value: '4', label: 'Integrations' },
-];
+function DemoDashboardSlide() {
+  const { problem, solution, caption } = useDemoContent('demo-dashboard');
+  return (
+    <DemoSlideLayout
+      problem={problem}
+      problemIcon={Layers}
+      problemColor="text-red-400"
+      problemBg="bg-red-500/20"
+      solution={solution}
+      screenshotAlt="Dashboard"
+      screenshotCaption={caption}
+    />
+  );
+}
 
-const integrations = [
-  { name: 'Gmail', icon: Mail },
-  { name: 'Google Docs', icon: FileDown },
-  { name: 'Greenhouse.io', icon: Globe },
-  { name: 'Google Maps', icon: Globe },
-];
+function DemoScoringSlide() {
+  const { problem, solution, caption } = useDemoContent('demo-scoring');
+  return (
+    <DemoSlideLayout
+      problem={problem}
+      problemIcon={Search}
+      problemColor="text-yellow-400"
+      problemBg="bg-yellow-500/20"
+      solution={solution}
+      screenshotAlt="Scoring Output"
+      screenshotCaption={caption}
+    />
+  );
+}
+
+function DemoResumeSlide() {
+  const { problem, solution, caption } = useDemoContent('demo-resume');
+  return (
+    <DemoSlideLayout
+      problem={problem}
+      problemIcon={FileText}
+      problemColor="text-blue-400"
+      problemBg="bg-blue-500/20"
+      solution={solution}
+      screenshotAlt="Resume Generation"
+      screenshotCaption={caption}
+    />
+  );
+}
+
+function DemoIntegrationsSlide() {
+  const { problem, solution, caption } = useDemoContent('demo-integrations');
+  return (
+    <DemoSlideLayout
+      problem={problem}
+      problemIcon={Globe}
+      problemColor="text-green-400"
+      problemBg="bg-green-500/20"
+      solution={solution}
+      screenshotAlt="Gmail Integration"
+      screenshotCaption={caption}
+    >
+      <div className="flex gap-2 mt-4">
+        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] text-xs text-[var(--text-secondary)]">
+          <Globe className="w-3 h-3" />
+          Google Maps — Location Lookup
+        </span>
+        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] text-xs text-[var(--text-secondary)]">
+          <Mail className="w-3 h-3" />
+          Gmail — Status Sync
+        </span>
+      </div>
+    </DemoSlideLayout>
+  );
+}
+
+function DemoCLISlide() {
+  const { problem, solution, caption } = useDemoContent('demo-cli');
+  return (
+    <DemoSlideLayout
+      problem={problem}
+      problemIcon={Terminal}
+      problemColor="text-purple-400"
+      problemBg="bg-purple-500/20"
+      solution={solution}
+      screenshotAlt="Terminal CLI"
+      screenshotCaption={caption}
+    />
+  );
+}
+
+/* ================================================================== */
+/*  CLOSING                                                            */
+/* ================================================================== */
+
+function MetaSlide() {
+  const sections = usePresentationContent();
+  const s = sections['meta'] || '';
+  const paras = extractParagraphs(s);
+
+  return (
+    <SlideLayout>
+      <Sparkles className="w-8 h-8 text-[var(--accent)] mb-6 opacity-60" />
+      <p className="text-2xl font-bold text-[var(--text-primary)] text-center leading-relaxed max-w-lg">
+        {paras[0] || 'The resume you reviewed was generated by this tool.'}
+      </p>
+      <p className="text-sm text-[var(--text-secondary)] mt-4 text-center max-w-md">
+        {paras[1] || 'Job Journal wrote the resume. HoganOS presented the case study. Claude Code built them both.'}
+      </p>
+      <div className="mt-8 flex items-center gap-3 text-xs text-[var(--text-muted)]">
+        {(paras[2] || 'Don Hogan | donhogan.com').split('|').map((part, i, arr) => (
+          <span key={i} className="flex items-center gap-3">
+            {part.trim()}
+            {i < arr.length - 1 && (
+              <span className="text-[var(--border-color)]">&middot;</span>
+            )}
+          </span>
+        ))}
+      </div>
+    </SlideLayout>
+  );
+}
+
+/* ================================================================== */
+/*  TECHNICAL APPENDIX                                                 */
+/* ================================================================== */
+
+function AppendixTitleSlide() {
+  const sections = usePresentationContent();
+  const s = sections['appendix-title'] || '';
+  const heading = extractHeading(s) || 'Technical Appendix';
+  const paras = extractParagraphs(s);
+
+  return (
+    <SlideLayout>
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)] to-purple-500 flex items-center justify-center mb-6">
+        <Database className="w-8 h-8 text-white" />
+      </div>
+      <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2 text-center">
+        {heading}
+      </h2>
+      {paras[0] && (
+        <p className="text-sm text-[var(--text-muted)] text-center max-w-md">
+          {paras[0]}
+        </p>
+      )}
+    </SlideLayout>
+  );
+}
+
+function PrinciplesSlide() {
+  const sections = usePresentationContent();
+  const s = sections['principles'] || '';
+  const heading = extractHeading(s) || 'Design Principles';
+  const items = extractListItems(s).map(parseListItem);
+
+  return (
+    <SlideLayout className="max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-6">
+        {heading}
+      </h2>
+      <div className="w-full grid grid-cols-3 gap-3">
+        {items.map((item, i) => {
+          const IconComp = principleIcons[i] || Shield;
+          return (
+            <div
+              key={i}
+              className="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] text-center"
+            >
+              <div className="w-10 h-10 rounded-lg bg-[var(--accent)]/20 flex items-center justify-center mx-auto mb-3">
+                <IconComp className="w-5 h-5 text-[var(--accent)]" />
+              </div>
+              <h3 className="font-semibold text-[var(--text-primary)] text-sm mb-1">
+                {item.title}
+              </h3>
+              <p className="text-xs text-[var(--text-muted)]">{item.text}</p>
+            </div>
+          );
+        })}
+      </div>
+    </SlideLayout>
+  );
+}
 
 function ArchitectureSlide() {
+  const sections = usePresentationContent();
+  const s = sections['architecture'] || '';
+  const heading = extractHeading(s) || 'System Architecture';
+  const paras = extractParagraphs(s);
+  const subtitle = paras[0] || '';
+  const pipelineSteps = extractCommaSeparated(s);
+  const stats = extractTableRows(s);
+
+  const integrationBadges = [
+    { name: 'Gmail', icon: Mail },
+    { name: 'Google Docs', icon: FileDown },
+    { name: 'Greenhouse.io', icon: Globe },
+    { name: 'Google Maps', icon: Globe },
+  ];
+
   return (
     <SlideLayout className="max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-1">
-        System Architecture
+        {heading}
       </h2>
-      <p className="text-sm text-[var(--text-muted)] mb-5">
-        Full lifecycle pipeline — not isolated features
-      </p>
-
-      {/* Pipeline */}
-      <div className="w-full flex flex-wrap items-center justify-center gap-1 mb-6 p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
-        {pipelineSteps.map((step, i) => (
-          <div key={step} className="flex items-center gap-1">
-            <span className="px-2.5 py-1 rounded bg-[var(--accent)]/15 text-xs font-medium text-[var(--accent)]">
-              {step}
-            </span>
-            {i < pipelineSteps.length - 1 && (
-              <ArrowRight className="w-3 h-3 text-[var(--text-muted)]" />
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Stats row */}
-      <div className="w-full grid grid-cols-4 gap-3 mb-5">
-        {stats.map((s) => (
-          <div
-            key={s.label}
-            className="p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] text-center"
-          >
-            <p className="text-xl font-bold text-[var(--text-primary)]">
-              {s.value}
-            </p>
-            <p className="text-xs text-[var(--text-muted)]">{s.label}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Integrations */}
+      {subtitle && (
+        <p className="text-sm text-[var(--text-muted)] mb-5">{subtitle}</p>
+      )}
+      {pipelineSteps.length > 0 && (
+        <div className="w-full flex flex-wrap items-center justify-center gap-1 mb-6 p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+          {pipelineSteps.map((step, i) => (
+            <div key={step} className="flex items-center gap-1">
+              <span className="px-2.5 py-1 rounded bg-[var(--accent)]/15 text-xs font-medium text-[var(--accent)]">
+                {step}
+              </span>
+              {i < pipelineSteps.length - 1 && (
+                <ArrowRight className="w-3 h-3 text-[var(--text-muted)]" />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      {stats.length > 0 && (
+        <div className="w-full grid grid-cols-4 gap-3 mb-5">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] text-center"
+            >
+              <p className="text-xl font-bold text-[var(--text-primary)]">
+                {stat.value}
+              </p>
+              <p className="text-xs text-[var(--text-muted)]">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="w-full flex justify-center gap-2">
-        {integrations.map((ig) => (
+        {integrationBadges.map((ig) => (
           <span
             key={ig.name}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] text-xs text-[var(--text-secondary)]"
@@ -368,103 +773,76 @@ function ArchitectureSlide() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  SLIDE 6 — Durable Trade-offs                                       */
-/* ------------------------------------------------------------------ */
-
-const tradeoffs = [
-  {
-    icon: Lock,
-    versus: 'Local-first vs. Cloud',
-    decision: 'Local-first',
-    why: "Career data is sensitive. 'Your data never leaves your machine' is a feature, not a limitation.",
-  },
-  {
-    icon: Database,
-    versus: 'Corpus vs. AI-generated',
-    decision: 'Corpus-backed',
-    why: 'Traceability over convenience. Every bullet has a source. Hallucination rate: 0%.',
-  },
-  {
-    icon: Monitor,
-    versus: 'CLI vs. GUI',
-    decision: 'Both',
-    why: 'Claude Code for conversations. CLI for automation. Web dashboard for visualization.',
-  },
-  {
-    icon: Package,
-    versus: 'Optional deps vs. batteries-included',
-    decision: 'Optional',
-    why: 'Gmail, Google Docs, RAG install separately. Core works offline with zero config.',
-  },
-];
-
 function TradeoffsSlide() {
+  const sections = usePresentationContent();
+  const s = sections['tradeoffs'] || '';
+  const heading = extractHeading(s) || 'Durable Trade-offs';
+  const paras = extractParagraphs(s);
+  const subtitle = paras[0] || '';
+  const items = extractListItems(s).map(parseTradeoffItem);
+
   return (
     <SlideLayout className="max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-1">
-        Durable Trade-offs
+        {heading}
       </h2>
-      <p className="text-sm text-[var(--text-muted)] mb-5">
-        Every architecture decision is a bet on what matters
-      </p>
-
+      {subtitle && (
+        <p className="text-sm text-[var(--text-muted)] mb-5">{subtitle}</p>
+      )}
       <div className="w-full grid grid-cols-2 gap-3">
-        {tradeoffs.map((t) => (
-          <div
-            key={t.versus}
-            className="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <t.icon className="w-4 h-4 text-[var(--text-muted)]" />
-              <span className="text-xs text-[var(--text-muted)]">
-                {t.versus}
-              </span>
+        {items.map((t, i) => {
+          const IconComp = tradeoffIcons[i] || Lock;
+          return (
+            <div
+              key={i}
+              className="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <IconComp className="w-4 h-4 text-[var(--text-muted)]" />
+                <span className="text-xs text-[var(--text-muted)]">
+                  {t.versus}
+                </span>
+              </div>
+              <p className="text-sm font-semibold text-[var(--accent)] mb-1">
+                {t.decision}
+              </p>
+              <p className="text-xs text-[var(--text-secondary)]">{t.why}</p>
             </div>
-            <p className="text-sm font-semibold text-[var(--accent)] mb-1">
-              {t.decision}
-            </p>
-            <p className="text-xs text-[var(--text-secondary)]">{t.why}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </SlideLayout>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  SLIDE 7 — By the Numbers                                           */
-/* ------------------------------------------------------------------ */
-
-const bigStats = [
-  { value: '11,500', label: 'lines of Python' },
-  { value: '30+', label: 'CLI commands' },
-  { value: '16', label: 'database tables' },
-  { value: '4', label: 'external integrations' },
-  { value: '2,080', label: 'lines of skill prompts' },
-  { value: '1', label: 'month to build' },
-];
-
 function NumbersSlide() {
+  const sections = usePresentationContent();
+  const s = sections['numbers'] || '';
+  const heading = extractHeading(s) || 'By the Numbers';
+  const paras = extractParagraphs(s);
+  const subtitle = paras[0] || '';
+  const stats = extractTableRows(s);
+
   return (
     <SlideLayout className="max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-1">
-        By the Numbers
+        {heading}
       </h2>
-      <p className="text-sm text-[var(--text-muted)] mb-6">
-        One month. One developer. One AI pair-programmer.
-      </p>
-
+      {subtitle && (
+        <p className="text-sm text-[var(--text-muted)] mb-6">{subtitle}</p>
+      )}
       <div className="w-full grid grid-cols-3 gap-3">
-        {bigStats.map((s) => (
+        {stats.map((stat) => (
           <div
-            key={s.label}
+            key={stat.label}
             className="p-5 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] text-center"
           >
             <p className="text-3xl font-bold text-[var(--accent)]">
-              {s.value}
+              {stat.value}
             </p>
-            <p className="text-xs text-[var(--text-muted)] mt-1">{s.label}</p>
+            <p className="text-xs text-[var(--text-muted)] mt-1">
+              {stat.label}
+            </p>
           </div>
         ))}
       </div>
@@ -472,51 +850,26 @@ function NumbersSlide() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  SLIDE 8 — What's Next                                              */
-/* ------------------------------------------------------------------ */
-
-const roadmap = [
-  {
-    title: 'ATS Job Monitoring',
-    desc: 'Automatically poll Greenhouse, Lever, and Ashby boards for target companies. 277-line spec ready.',
-    status: 'Designed',
-    statusColor: 'bg-blue-500/20 text-blue-400',
-  },
-  {
-    title: 'Bullet-level Selection',
-    desc: 'Choose specific achievements per role during resume generation. Infrastructure exists.',
-    status: 'Planned',
-    statusColor: 'bg-yellow-500/20 text-yellow-400',
-  },
-  {
-    title: 'Open Source Release',
-    desc: 'Community files, test suite, CI/CD pipeline. Local-first tools should be shared.',
-    status: 'In Progress',
-    statusColor: 'bg-green-500/20 text-green-400',
-  },
-  {
-    title: 'Platform for Others',
-    desc: 'The corpus architecture enables any corpus-driven career tool. Resume is just the first output.',
-    status: 'Vision',
-    statusColor: 'bg-purple-500/20 text-purple-400',
-  },
-];
-
 function WhatsNextSlide() {
+  const sections = usePresentationContent();
+  const s = sections['whats-next'] || '';
+  const heading = extractHeading(s) || "What's Next";
+  const paras = extractParagraphs(s);
+  const subtitle = paras[0] || '';
+  const items = extractListItems(s).map(parseRoadmapItem);
+
   return (
     <SlideLayout className="items-start max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-1">
-        What&rsquo;s Next
+        {heading}
       </h2>
-      <p className="text-sm text-[var(--text-muted)] mb-5">
-        The architecture supports what hasn&rsquo;t been built yet
-      </p>
-
+      {subtitle && (
+        <p className="text-sm text-[var(--text-muted)] mb-5">{subtitle}</p>
+      )}
       <div className="w-full space-y-3">
-        {roadmap.map((r) => (
+        {items.map((r, i) => (
           <div
-            key={r.title}
+            key={i}
             className="flex items-start gap-3 p-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]"
           >
             <div className="flex-1">
@@ -527,7 +880,7 @@ function WhatsNextSlide() {
                 <span
                   className={cn(
                     'px-2 py-0.5 rounded text-[10px] font-medium',
-                    r.statusColor,
+                    roadmapColors[r.status] || 'bg-[var(--accent)]/20 text-[var(--accent)]',
                   )}
                 >
                   {r.status}
@@ -543,41 +896,26 @@ function WhatsNextSlide() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  SLIDE 9 — The Meta Moment                                          */
-/* ------------------------------------------------------------------ */
-
-function MetaSlide() {
-  return (
-    <SlideLayout>
-      <Sparkles className="w-8 h-8 text-[var(--accent)] mb-6 opacity-60" />
-      <p className="text-2xl font-bold text-[var(--text-primary)] text-center leading-relaxed max-w-lg">
-        The resume you reviewed was generated by this tool.
-      </p>
-      <p className="text-sm text-[var(--text-secondary)] mt-4 text-center max-w-md">
-        Job Journal wrote the resume. HoganOS presented the case study. Claude
-        Code built them both.
-      </p>
-      <div className="mt-8 flex items-center gap-3 text-xs text-[var(--text-muted)]">
-        <span>Don Hogan</span>
-        <span className="text-[var(--border-color)]">&middot;</span>
-        <span>donhogan.com</span>
-      </div>
-    </SlideLayout>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /*  Export                                                              */
 /* ------------------------------------------------------------------ */
 
 export const jobJournalSlides: React.ComponentType[] = [
   TitleSlide,
-  ProblemSlide,
+  BrutalMathSlide,
+  EmotionalCycleSlide,
+  KnowledgeExistsSlide,
+  CoreIdeaSlide,
+  ProductIntroSlide,
+  DemoDashboardSlide,
+  DemoScoringSlide,
+  DemoResumeSlide,
+  DemoIntegrationsSlide,
+  DemoCLISlide,
+  MetaSlide,
+  AppendixTitleSlide,
   PrinciplesSlide,
-  AINativeSlide,
   ArchitectureSlide,
   TradeoffsSlide,
   NumbersSlide,
   WhatsNextSlide,
-  MetaSlide,
 ];

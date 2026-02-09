@@ -12,11 +12,11 @@ export const presentations: Presentation[] = [
   {
     id: 'job-journal-case-study',
     title: 'Job Journal',
-    subtitle: 'An AI-Native Product Case Study',
+    subtitle: 'From Career Chaos to Corpus-Driven Clarity',
     description:
-      'Architecture, design principles, and trade-offs behind a corpus-driven, AI-native career management tool built in one month.',
+      'A story-driven case study: the pain of modern job searching, the insight behind corpus-driven resumes, and a demo of the AI-native tool built to solve it.',
     date: 'February 2026',
-    slideCount: 9,
-    tags: ['AI', 'Product Management', 'Case Study'],
+    slideCount: 18,
+    tags: ['AI', 'Product Management', 'Case Study', 'Demo'],
   },
 ];

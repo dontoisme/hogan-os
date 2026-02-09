@@ -78,6 +78,10 @@ const windowIcons: Record<string, string> = {
   presentations: 'presentation',
 };
 
+const windowSizeOverrides: Record<string, { size: { width: number; height: number } }> = {
+  presentations: { size: { width: 920, height: 700 } },
+};
+
 export function Desktop() {
   const { theme } = useThemeStore();
   const { windows, openWindow } = useWindowStore();
@@ -101,7 +105,7 @@ export function Desktop() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleIconDoubleClick = (id: string) => {
-    openWindow(id, windowTitles[id] || id, windowIcons[id] || 'file');
+    openWindow(id, windowTitles[id] || id, windowIcons[id] || 'file', windowSizeOverrides[id]);
   };
 
   return (

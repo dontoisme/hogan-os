@@ -1,8 +1,9 @@
 'use client';
 
 import { useThemeStore, ThemeMode } from '@/stores/themeStore';
-import { Sun, Moon, Monitor, Volume2, VolumeX, Check } from 'lucide-react';
+import { Sun, Moon, Monitor, Volume2, VolumeX, Check, FileEdit } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PresentationEditor } from '@/components/PresentationEditor';
 
 export function SettingsWindow() {
   const { theme, setTheme, soundEnabled, toggleSound } = useThemeStore();
@@ -118,6 +119,17 @@ export function SettingsWindow() {
               />
             </div>
           </button>
+        </section>
+
+        {/* Presentation Content */}
+        <section className="mb-8">
+          <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+            <span className="flex items-center gap-2">
+              <FileEdit className="w-5 h-5" />
+              Presentation Content
+            </span>
+          </h2>
+          <PresentationEditor />
         </section>
 
         {/* About */}
