@@ -231,8 +231,8 @@ body {
   -webkit-backdrop-filter: blur(20px);
 }
 
-/* Mobile fallback styles */
-@media (max-width: 768px) {
+/* Mobile/desktop visibility */
+@media (max-width: 1024px) {
   .desktop-only {
     display: none !important;
   }
@@ -242,8 +242,17 @@ body {
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .mobile-only {
     display: none !important;
   }
+}
+
+/* Mobile shell utilities */
+.mobile-shell {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-panel-content {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }

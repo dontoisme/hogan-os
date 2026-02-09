@@ -1,0 +1,75 @@
+'use client';
+
+import {
+  ScrollText,
+  FolderOpen,
+  FileText,
+  Briefcase,
+  BarChart3,
+  Mail,
+  User,
+  Settings,
+  Presentation,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+interface MobileApp {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  description: string;
+}
+
+const mobileApps: MobileApp[] = [
+  { id: 'readme', label: 'Start Here', icon: ScrollText, description: 'Role fit & intro' },
+  { id: 'projects', label: 'Side Quests', icon: FolderOpen, description: 'What I build' },
+  { id: 'resume', label: 'Resume', icon: FileText, description: 'The formal stuff' },
+  { id: 'experience', label: 'The Journey', icon: Briefcase, description: 'Work history' },
+  { id: 'job-journal', label: 'Job Journal', icon: BarChart3, description: 'Application tracker' },
+  { id: 'contact', label: 'Say Hi', icon: Mail, description: 'Get in touch' },
+  { id: 'about', label: 'The Dude', icon: User, description: 'Who I am' },
+  { id: 'settings', label: 'Preferences', icon: Settings, description: 'Theme & sound' },
+  { id: 'presentations', label: 'Presentations', icon: Presentation, description: 'Case studies' },
+];
+
+interface MobileAppGridProps {
+  onOpenApp: (appId: string) => void;
+}
+
+export function MobileAppGrid({ onOpenApp }: MobileAppGridProps) {
+  return (
+    <div className="p-4 pb-8">
+      <p className="text-sm text-[var(--text-secondary)] mb-4 px-1">
+        Welcome to HoganOS. Tap to explore.
+      </p>
+
+      <div className="grid grid-cols-3 gap-3">
+        {mobileApps.map((app) => (
+          <button
+            key={app.id}
+            onClick={() => onOpenApp(app.id)}
+            className="flex flex-col items-center gap-2 p-3 rounded-xl
+                       bg-[var(--bg-secondary)] border border-[var(--border-color)]
+                       active:scale-95 transition-transform duration-100
+                       min-h-[100px]"
+          >
+            <div
+              className="w-11 h-11 rounded-xl bg-[var(--bg-tertiary)]
+                         flex items-center justify-center shrink-0"
+            >
+              <app.icon className="w-5 h-5 text-[var(--accent)]" />
+            </div>
+            <div className="text-center">
+              <p className="text-xs font-medium text-[var(--text-primary)] leading-tight">
+                {app.label}
+              </p>
+              <p className="text-[10px] text-[var(--text-muted)] mt-0.5 leading-tight">
+                {app.description}
+              </p>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}

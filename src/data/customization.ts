@@ -80,8 +80,8 @@ export const customizationItems: CustomizationItem[] = [
   { category: "START MENU", item: "Header style", currentValue: "Gradient with name", fileLocation: "src/components/desktop/StartMenu.tsx", notes: "Custom illustration or photo" },
 
   // MOBILE
-  { category: "MOBILE", item: "Accordion sections", currentValue: "Basic list", fileLocation: "src/components/MobileFallback.tsx", notes: "Custom mobile experience" },
-  { category: "MOBILE", item: "Mobile header", currentValue: "Name + title", fileLocation: "src/components/MobileFallback.tsx", notes: "Add photo or branding" },
+  { category: "MOBILE", item: "App grid", currentValue: "3x3 tile grid", fileLocation: "src/components/mobile/MobileAppGrid.tsx", notes: "Touch-friendly app launcher" },
+  { category: "MOBILE", item: "Mobile header", currentValue: "Name + title + theme toggle", fileLocation: "src/components/mobile/MobileShell.tsx", notes: "Add photo or branding" },
 
   // META
   { category: "META", item: "Page title", currentValue: "HoganOS | Don Hogan", fileLocation: "src/app/layout.tsx", notes: "Your SEO title" },
