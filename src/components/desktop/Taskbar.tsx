@@ -5,6 +5,7 @@ import { useWindowStore } from '@/stores/windowStore';
 import { StartMenu } from './StartMenu';
 import { SystemTray } from './SystemTray';
 import { cn } from '@/lib/utils';
+import { playRetroSound } from '@/lib/retroSounds';
 import Image from 'next/image';
 
 export function Taskbar() {
@@ -28,7 +29,7 @@ export function Taskbar() {
 
       {/* Taskbar */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-11 flex items-center px-3 border-t border-[var(--border-color)]"
+        className="retro-taskbar absolute bottom-0 left-0 right-0 h-11 flex items-center px-3 border-t border-[var(--border-color)]"
         style={{ background: 'var(--bg-taskbar)', zIndex: 9999 }}
       >
         {/* Start Button */}
@@ -38,7 +39,10 @@ export function Taskbar() {
             'hover:bg-[var(--bg-tertiary)]',
             showStartMenu && 'bg-[var(--bg-tertiary)]'
           )}
-          onClick={() => setShowStartMenu(!showStartMenu)}
+          onClick={() => {
+            playRetroSound('startMenu');
+            setShowStartMenu(!showStartMenu);
+          }}
         >
           <Image
             src="/images/logo/hoganos-logo.png"

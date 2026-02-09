@@ -157,7 +157,7 @@ export function Window({ windowState, children }: WindowProps) {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.15 }}
       className={cn(
-        'absolute flex flex-col rounded-xl overflow-hidden',
+        'window-chrome absolute flex flex-col rounded-xl overflow-hidden',
         'border border-[var(--border-color)]',
         isActive ? 'ring-1 ring-[var(--border-color)]' : 'opacity-90'
       )}
@@ -175,7 +175,7 @@ export function Window({ windowState, children }: WindowProps) {
       {/* Title Bar */}
       <div
         className={cn(
-          'flex items-center justify-between h-10 px-3 cursor-move select-none',
+          'window-titlebar flex items-center justify-between h-10 px-3 cursor-move select-none',
           'border-b border-[var(--border-color)]',
           'bg-[var(--bg-secondary)]'
         )}
@@ -200,7 +200,7 @@ export function Window({ windowState, children }: WindowProps) {
             />
           </div>
         </div>
-        <span className="text-xs font-medium text-[var(--text-secondary)] absolute left-1/2 -translate-x-1/2">
+        <span className="window-title text-xs font-medium text-[var(--text-secondary)] absolute left-1/2 -translate-x-1/2">
           {windowState.title}
         </span>
         <div className="w-16" /> {/* Spacer for centering */}

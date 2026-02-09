@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useThemeStore, ThemeMode } from '@/stores/themeStore';
 import { AnimatePresence } from 'framer-motion';
 import { Sun, Moon, Monitor } from 'lucide-react';
+import { useRetroSounds } from '@/hooks/useRetroSounds';
 import { MobileAppGrid } from './MobileAppGrid';
 import { MobileAppPanel } from './MobileAppPanel';
 import { ReadmeWindow } from '../windows/ReadmeWindow';
@@ -46,6 +47,8 @@ const themeIcons = { dark: Moon, light: Sun, retro: Monitor };
 export function MobileShell() {
   const { theme, setTheme } = useThemeStore();
   const [activeApp, setActiveApp] = useState<string | null>(null);
+
+  useRetroSounds();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);

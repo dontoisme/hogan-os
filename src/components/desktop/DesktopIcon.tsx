@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { playRetroSound } from '@/lib/retroSounds';
 
 interface DesktopIconProps {
   id: string;
@@ -16,6 +17,7 @@ export function DesktopIcon({ id, label, icon: Icon, onDoubleClick }: DesktopIco
 
   const handleClick = () => {
     setIsSelected(true);
+    playRetroSound('click');
   };
 
   const handleBlur = () => {

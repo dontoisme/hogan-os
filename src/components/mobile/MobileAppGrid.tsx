@@ -12,6 +12,7 @@ import {
   Presentation,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { playRetroSound } from '@/lib/retroSounds';
 
 interface MobileApp {
   id: string;
@@ -47,7 +48,10 @@ export function MobileAppGrid({ onOpenApp }: MobileAppGridProps) {
         {mobileApps.map((app) => (
           <button
             key={app.id}
-            onClick={() => onOpenApp(app.id)}
+            onClick={() => {
+              playRetroSound('click');
+              onOpenApp(app.id);
+            }}
             className="flex flex-col items-center gap-2 p-3 rounded-xl
                        bg-[var(--bg-window)] border border-[var(--border-color)]
                        active:scale-[0.97] transition-all duration-100

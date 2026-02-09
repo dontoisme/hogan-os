@@ -15,6 +15,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { playRetroSound } from '@/lib/retroSounds';
 import Image from 'next/image';
 
 interface StartMenuProps {
@@ -63,6 +64,7 @@ export function StartMenu({ onClose }: StartMenuProps) {
   }, [onClose]);
 
   const handleItemClick = (id: string, title: string) => {
+    playRetroSound('click');
     openWindow(id, title, id);
     onClose();
   };

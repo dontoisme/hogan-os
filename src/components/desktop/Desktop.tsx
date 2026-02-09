@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useThemeStore } from '@/stores/themeStore';
 import { useWindowStore } from '@/stores/windowStore';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
+import { useRetroSounds } from '@/hooks/useRetroSounds';
 import { DesktopIcon } from './DesktopIcon';
 import { Taskbar } from './Taskbar';
 import { Window } from '../windows/Window';
@@ -86,6 +87,9 @@ export function Desktop() {
   const { theme } = useThemeStore();
   const { windows, openWindow } = useWindowStore();
   const [hackerModeActive, setHackerModeActive] = useState(false);
+
+  // Retro sound effects (subscribes to window events)
+  useRetroSounds();
 
   // Konami code easter egg
   useKonamiCode(() => {
