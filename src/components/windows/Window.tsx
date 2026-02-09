@@ -146,7 +146,7 @@ export function Window({ windowState, children }: WindowProps) {
     : windowState.position;
 
   const size = windowState.isMaximized
-    ? { width: '100%', height: 'calc(100% - 48px)' }
+    ? { width: '100%', height: 'calc(100% - 44px)' }
     : { width: windowState.size.width, height: windowState.size.height };
 
   return (
@@ -157,9 +157,9 @@ export function Window({ windowState, children }: WindowProps) {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.15 }}
       className={cn(
-        'absolute flex flex-col rounded-lg overflow-hidden',
+        'absolute flex flex-col rounded-xl overflow-hidden',
         'border border-[var(--border-color)]',
-        isActive ? 'shadow-2xl' : 'shadow-lg opacity-95'
+        isActive ? 'ring-1 ring-[var(--border-color)]' : 'opacity-90'
       )}
       style={{
         left: position.x,
@@ -177,7 +177,7 @@ export function Window({ windowState, children }: WindowProps) {
         className={cn(
           'flex items-center justify-between h-10 px-3 cursor-move select-none',
           'border-b border-[var(--border-color)]',
-          isActive ? 'bg-[var(--bg-tertiary)]' : 'bg-[var(--bg-secondary)]'
+          'bg-[var(--bg-secondary)]'
         )}
         onMouseDown={handleMouseDown}
       >
@@ -200,7 +200,7 @@ export function Window({ windowState, children }: WindowProps) {
             />
           </div>
         </div>
-        <span className="text-sm font-medium text-[var(--text-primary)] absolute left-1/2 -translate-x-1/2">
+        <span className="text-xs font-medium text-[var(--text-secondary)] absolute left-1/2 -translate-x-1/2">
           {windowState.title}
         </span>
         <div className="w-16" /> {/* Spacer for centering */}

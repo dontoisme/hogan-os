@@ -56,7 +56,7 @@ export const customizationItems: CustomizationItem[] = [
   { category: "FUN STUFF", item: "Add sound effects", currentValue: "Disabled", fileLocation: "public/sounds/", notes: "Startup sound, click sounds, etc." },
 
   // THEMES
-  { category: "THEMES", item: "Accent color", currentValue: "#0078d4 (blue)", fileLocation: "src/app/globals.css (--accent)", notes: "Your brand color" },
+  { category: "THEMES", item: "Accent color", currentValue: "#f97316 (orange)", fileLocation: "src/app/globals.css (--accent)", notes: "Your brand color" },
   { category: "THEMES", item: "Dark mode colors", currentValue: "Default dark grays", fileLocation: "src/app/globals.css :root", notes: "Custom color palette" },
   { category: "THEMES", item: "Light mode colors", currentValue: "Default light grays", fileLocation: "src/app/globals.css [data-theme=\"light\"]", notes: "Custom color palette" },
   { category: "THEMES", item: "Retro mode colors", currentValue: "Windows 95 style", fileLocation: "src/app/globals.css [data-theme=\"retro\"]", notes: "Could be Mac OS 9 or other" },

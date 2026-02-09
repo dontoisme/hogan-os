@@ -28,13 +28,13 @@ export function Taskbar() {
 
       {/* Taskbar */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-12 flex items-center px-2 border-t border-[var(--border-color)]"
+        className="absolute bottom-0 left-0 right-0 h-11 flex items-center px-3 border-t border-[var(--border-color)]"
         style={{ background: 'var(--bg-taskbar)', zIndex: 9999 }}
       >
         {/* Start Button */}
         <button
           className={cn(
-            'flex items-center gap-2 px-3 h-9 rounded-md transition-colors',
+            'flex items-center gap-2 px-2.5 h-8 rounded-lg transition-colors',
             'hover:bg-[var(--bg-tertiary)]',
             showStartMenu && 'bg-[var(--bg-tertiary)]'
           )}
@@ -43,15 +43,15 @@ export function Taskbar() {
           <Image
             src="/images/logo/hoganos-logo.png"
             alt="HoganOS"
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             className="rounded-sm"
           />
-          <span className="text-sm font-medium hidden sm:inline">Start</span>
+          <span className="text-xs font-medium hidden sm:inline text-[var(--text-secondary)]">Start</span>
         </button>
 
         {/* Divider */}
-        <div className="w-px h-6 bg-[var(--border-color)] mx-2" />
+        <div className="w-px h-5 bg-[var(--border-color)] mx-2" />
 
         {/* Open Windows */}
         <div className="flex-1 flex items-center gap-1 overflow-x-auto">
@@ -59,16 +59,16 @@ export function Taskbar() {
             <button
               key={window.id}
               className={cn(
-                'flex items-center gap-2 px-3 h-9 rounded-md transition-colors min-w-[120px] max-w-[200px]',
+                'flex items-center gap-2 px-3 h-8 rounded-lg transition-colors min-w-[100px] max-w-[180px]',
                 'hover:bg-[var(--bg-tertiary)]',
                 activeWindowId === window.id && !window.isMinimized
                   ? 'bg-[var(--bg-tertiary)] border-b-2 border-[var(--accent)]'
-                  : 'bg-[var(--bg-secondary)]',
-                window.isMinimized && 'opacity-70'
+                  : '',
+                window.isMinimized && 'opacity-50'
               )}
               onClick={() => handleWindowClick(window.id, window.isMinimized)}
             >
-              <span className="text-sm truncate">{window.title}</span>
+              <span className="text-xs truncate text-[var(--text-secondary)]">{window.title}</span>
             </button>
           ))}
         </div>

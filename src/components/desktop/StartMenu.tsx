@@ -70,7 +70,7 @@ export function StartMenu({ onClose }: StartMenuProps) {
   return (
     <div
       ref={menuRef}
-      className="start-menu absolute bottom-14 left-2 w-72 rounded-lg border border-[var(--border-color)] overflow-hidden"
+      className="start-menu absolute bottom-12 left-2 w-64 rounded-xl border border-[var(--border-color)] overflow-hidden"
       style={{
         background: 'var(--bg-window)',
         boxShadow: 'var(--window-shadow)',
@@ -78,44 +78,44 @@ export function StartMenu({ onClose }: StartMenuProps) {
       }}
     >
       {/* Header */}
-      <div className="p-4 border-b border-[var(--border-color)] bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)]">
+      <div className="px-4 py-3 border-b border-[var(--border-color)]">
         <div className="flex items-center gap-3">
           <Image
             src="/images/logo/hoganos-logo.png"
             alt="HoganOS"
-            width={48}
-            height={48}
-            className="rounded-md"
+            width={36}
+            height={36}
+            className="rounded-lg"
           />
           <div>
-            <h2 className="text-lg font-bold text-white">Don Hogan</h2>
-            <p className="text-sm text-white/80">Principal Product Manager – Growth</p>
+            <h2 className="text-sm font-semibold text-[var(--text-primary)]">Don Hogan</h2>
+            <p className="text-xs text-[var(--text-muted)]">Principal PM &ndash; Growth</p>
           </div>
         </div>
       </div>
 
       {/* Menu Items */}
-      <div className="p-2">
+      <div className="p-1.5">
         {menuItems.map((item) => (
           <button
             key={item.id}
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2 rounded-md transition-colors',
+              'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
               'hover:bg-[var(--bg-tertiary)] text-left'
             )}
             onClick={() => handleItemClick(item.id, item.label)}
           >
-            <item.icon className="w-5 h-5 text-[var(--text-secondary)]" />
+            <item.icon className="w-4 h-4 text-[var(--text-muted)]" />
             <span className="text-sm text-[var(--text-primary)]">{item.label}</span>
           </button>
         ))}
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-[var(--border-color)] mx-2" />
+      <div className="h-px bg-[var(--border-color)] mx-3" />
 
       {/* External Links */}
-      <div className="p-2">
+      <div className="p-1.5">
         {externalLinks.map((link) => (
           <a
             key={link.label}
@@ -123,14 +123,14 @@ export function StartMenu({ onClose }: StartMenuProps) {
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              'w-full flex items-center gap-3 px-3 py-2 rounded-md transition-colors',
+              'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
               'hover:bg-[var(--bg-tertiary)]'
             )}
             onClick={onClose}
           >
-            <link.icon className="w-5 h-5 text-[var(--text-secondary)]" />
+            <link.icon className="w-4 h-4 text-[var(--text-muted)]" />
             <span className="text-sm text-[var(--text-primary)] flex-1">{link.label}</span>
-            <ExternalLink className="w-4 h-4 text-[var(--text-muted)]" />
+            <ExternalLink className="w-3.5 h-3.5 text-[var(--text-muted)]" />
           </a>
         ))}
       </div>

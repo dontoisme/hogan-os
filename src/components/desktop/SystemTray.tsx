@@ -35,67 +35,67 @@ export function SystemTray() {
   const ThemeIcon = getThemeIcon();
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-0.5">
       {/* Sound Toggle */}
       <button
         className={cn(
-          'p-2 rounded-md transition-colors',
+          'p-1.5 rounded-lg transition-colors',
           'hover:bg-[var(--bg-tertiary)]'
         )}
         onClick={toggleSound}
         title={soundEnabled ? 'Mute sounds' : 'Enable sounds'}
       >
         {soundEnabled ? (
-          <Volume2 className="w-4 h-4 text-[var(--text-secondary)]" />
+          <Volume2 className="w-3.5 h-3.5 text-[var(--text-muted)]" />
         ) : (
-          <VolumeX className="w-4 h-4 text-[var(--text-muted)]" />
+          <VolumeX className="w-3.5 h-3.5 text-[var(--text-muted)]" />
         )}
       </button>
 
       {/* WiFi (decorative) */}
       <button
         className={cn(
-          'p-2 rounded-md transition-colors',
+          'p-1.5 rounded-lg transition-colors',
           'hover:bg-[var(--bg-tertiary)]'
         )}
         title="Connected"
       >
-        <Wifi className="w-4 h-4 text-[var(--text-secondary)]" />
+        <Wifi className="w-3.5 h-3.5 text-[var(--text-muted)]" />
       </button>
 
       {/* Battery (decorative) */}
       <button
         className={cn(
-          'p-2 rounded-md transition-colors',
+          'p-1.5 rounded-lg transition-colors',
           'hover:bg-[var(--bg-tertiary)]'
         )}
         title="Battery: 100%"
       >
-        <Battery className="w-4 h-4 text-[var(--text-secondary)]" />
+        <Battery className="w-3.5 h-3.5 text-[var(--text-muted)]" />
       </button>
 
       {/* Theme Toggle */}
       <div className="relative">
         <button
           className={cn(
-            'p-2 rounded-md transition-colors',
+            'p-1.5 rounded-lg transition-colors',
             'hover:bg-[var(--bg-tertiary)]',
             showThemeMenu && 'bg-[var(--bg-tertiary)]'
           )}
           onClick={() => setShowThemeMenu(!showThemeMenu)}
           title="Change theme"
         >
-          <ThemeIcon className="w-4 h-4 text-[var(--text-secondary)]" />
+          <ThemeIcon className="w-3.5 h-3.5 text-[var(--text-muted)]" />
         </button>
 
         {showThemeMenu && (
           <div
-            className="absolute bottom-full right-0 mb-2 w-32 rounded-lg border border-[var(--border-color)] overflow-hidden"
+            className="absolute bottom-full right-0 mb-2 w-28 rounded-xl border border-[var(--border-color)] overflow-hidden p-1"
             style={{ background: 'var(--bg-window)', boxShadow: 'var(--window-shadow)' }}
           >
             <button
               className={cn(
-                'w-full flex items-center gap-2 px-3 py-2 transition-colors',
+                'w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-colors',
                 'hover:bg-[var(--bg-tertiary)]',
                 theme === 'light' && 'bg-[var(--bg-tertiary)]'
               )}
@@ -104,12 +104,12 @@ export function SystemTray() {
                 setShowThemeMenu(false);
               }}
             >
-              <Sun className="w-4 h-4" />
-              <span className="text-sm">Light</span>
+              <Sun className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+              <span className="text-xs text-[var(--text-secondary)]">Light</span>
             </button>
             <button
               className={cn(
-                'w-full flex items-center gap-2 px-3 py-2 transition-colors',
+                'w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-colors',
                 'hover:bg-[var(--bg-tertiary)]',
                 theme === 'dark' && 'bg-[var(--bg-tertiary)]'
               )}
@@ -118,12 +118,12 @@ export function SystemTray() {
                 setShowThemeMenu(false);
               }}
             >
-              <Moon className="w-4 h-4" />
-              <span className="text-sm">Dark</span>
+              <Moon className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+              <span className="text-xs text-[var(--text-secondary)]">Dark</span>
             </button>
             <button
               className={cn(
-                'w-full flex items-center gap-2 px-3 py-2 transition-colors',
+                'w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-colors',
                 'hover:bg-[var(--bg-tertiary)]',
                 theme === 'retro' && 'bg-[var(--bg-tertiary)]'
               )}
@@ -132,18 +132,18 @@ export function SystemTray() {
                 setShowThemeMenu(false);
               }}
             >
-              <Monitor className="w-4 h-4" />
-              <span className="text-sm">Retro</span>
+              <Monitor className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+              <span className="text-xs text-[var(--text-secondary)]">Retro</span>
             </button>
           </div>
         )}
       </div>
 
       {/* Divider */}
-      <div className="w-px h-6 bg-[var(--border-color)] mx-1" />
+      <div className="w-px h-4 bg-[var(--border-color)] mx-1.5" />
 
       {/* Clock */}
-      <div className="px-2 text-sm text-[var(--text-primary)] tabular-nums">
+      <div className="px-1 text-xs text-[var(--text-muted)] tabular-nums">
         {formatDate(currentTime)}
       </div>
     </div>

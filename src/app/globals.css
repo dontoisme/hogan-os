@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  /* Dark theme (default) */
-  --bg-primary: #0c0c0c;
-  --bg-secondary: #1a1a1a;
-  --bg-tertiary: #242424;
-  --bg-window: #1e1e1e;
-  --bg-taskbar: #0d0d0d;
+  /* Dark theme (default) — neutral zinc palette */
+  --bg-primary: #18181b;
+  --bg-secondary: #27272a;
+  --bg-tertiary: #3f3f46;
+  --bg-window: #27272a;
+  --bg-taskbar: #18181b;
 
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-muted: #666666;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
 
-  --border-color: #333333;
-  --border-active: #0078d4;
+  --border-color: #3f3f46;
+  --border-active: #f97316;
 
-  --accent: #0078d4;
-  --accent-hover: #1a86d9;
-  --accent-active: #005a9e;
+  --accent: #f97316;
+  --accent-hover: #fb923c;
+  --accent-active: #ea580c;
 
-  --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --icon-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --window-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.25);
+  --icon-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 
   /* Wallpaper */
   --wallpaper-gradient: url('/images/wallpapers/green-mountains.png');
@@ -29,21 +29,25 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #f0f0f0;
-  --bg-secondary: #e0e0e0;
-  --bg-tertiary: #d0d0d0;
+  --bg-primary: #fafafa;
+  --bg-secondary: #f4f4f5;
+  --bg-tertiary: #e4e4e7;
   --bg-window: #ffffff;
-  --bg-taskbar: #e8e8e8;
+  --bg-taskbar: #ffffff;
 
-  --text-primary: #1a1a1a;
-  --text-secondary: #555555;
-  --text-muted: #888888;
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
 
-  --border-color: #c0c0c0;
-  --border-active: #0078d4;
+  --border-color: #e4e4e7;
+  --border-active: #f97316;
 
-  --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  --icon-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --accent: #f97316;
+  --accent-hover: #ea580c;
+  --accent-active: #c2410c;
+
+  --window-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --icon-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 
   --wallpaper-gradient: url('/images/wallpapers/growth-rings.png');
   --wallpaper-size: cover;
@@ -110,18 +114,17 @@ body {
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--bg-tertiary);
-  border-radius: 6px;
-  border: 2px solid var(--bg-secondary);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -135,23 +138,24 @@ body {
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: all 0.15s ease;
+  opacity: 0.5;
 }
 
 .window-button:hover {
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .window-button-close {
-  background: #ff5f57;
+  background: #ef4444;
 }
 
 .window-button-minimize {
-  background: #febc2e;
+  background: #a1a1aa;
 }
 
 .window-button-maximize {
-  background: #28c840;
+  background: #a1a1aa;
 }
 
 /* Retro theme window buttons */

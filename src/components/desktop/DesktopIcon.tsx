@@ -25,9 +25,9 @@ export function DesktopIcon({ id, label, icon: Icon, onDoubleClick }: DesktopIco
   return (
     <button
       className={cn(
-        'desktop-icon flex flex-col items-center justify-center gap-1 p-2 rounded-lg transition-colors w-20 h-24',
-        'hover:bg-white/10 focus:bg-white/10',
-        isSelected && 'bg-white/20'
+        'desktop-icon flex flex-col items-center justify-center gap-1.5 p-2 rounded-xl transition-all w-20 h-24',
+        'hover:bg-white/10',
+        isSelected && 'bg-white/15'
       )}
       onClick={handleClick}
       onDoubleClick={onDoubleClick}
@@ -36,21 +36,18 @@ export function DesktopIcon({ id, label, icon: Icon, onDoubleClick }: DesktopIco
     >
       <div
         className={cn(
-          'w-12 h-12 flex items-center justify-center rounded-lg',
-          'bg-gradient-to-br from-white/20 to-white/5',
-          'shadow-lg backdrop-blur-sm'
+          'w-11 h-11 flex items-center justify-center rounded-xl',
+          'bg-white/10 border border-white/10'
         )}
-        style={{ boxShadow: 'var(--icon-shadow)' }}
       >
-        <Icon className="w-7 h-7 text-white" strokeWidth={1.5} />
+        <Icon className="w-6 h-6 text-white/90" strokeWidth={1.5} />
       </div>
       <span
         className={cn(
-          'text-xs text-white text-center leading-tight mt-1',
-          'text-shadow-sm drop-shadow-md',
-          isSelected && 'bg-[var(--accent)] px-1 rounded'
+          'text-[11px] text-white/90 text-center leading-tight',
+          isSelected && 'text-white'
         )}
-        style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
+        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}
       >
         {label}
       </span>

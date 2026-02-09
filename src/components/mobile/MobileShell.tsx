@@ -64,22 +64,22 @@ export function MobileShell() {
       {/* Sticky header */}
       <header
         className="sticky top-0 z-40 border-b border-[var(--border-color)]
-                    bg-[var(--bg-primary)]/95 backdrop-blur-md"
+                    bg-[var(--bg-window)]/95 backdrop-blur-md"
       >
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <h1 className="text-lg font-bold text-[var(--text-primary)]">Don Hogan</h1>
-            <p className="text-xs text-[var(--text-secondary)]">
+            <h1 className="text-base font-semibold text-[var(--text-primary)]">Don Hogan</h1>
+            <p className="text-xs text-[var(--text-muted)]">
               Principal Product Manager &ndash; Growth
             </p>
           </div>
           <button
             onClick={cycleTheme}
-            className="w-10 h-10 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]
-                       flex items-center justify-center"
+            className="w-9 h-9 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)]
+                       flex items-center justify-center transition-colors hover:bg-[var(--bg-tertiary)]"
             aria-label="Toggle theme"
           >
-            <ThemeIcon className="w-4 h-4 text-[var(--text-secondary)]" />
+            <ThemeIcon className="w-4 h-4 text-[var(--text-muted)]" />
           </button>
         </div>
       </header>
@@ -105,7 +105,7 @@ export function MobileShell() {
       {/* Footer — only when on home screen */}
       {!activeApp && (
         <footer className="px-4 py-4 text-center">
-          <p className="text-xs text-[var(--text-muted)]">
+          <p className="text-[11px] text-[var(--text-muted)]">
             Built with Claude Code &mdash; try the desktop experience on a larger screen
           </p>
         </footer>

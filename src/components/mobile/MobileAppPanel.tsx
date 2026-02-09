@@ -22,18 +22,19 @@ export function MobileAppPanel({ title, onClose, children }: MobileAppPanelProps
       {/* Panel header */}
       <div
         className="flex items-center gap-3 px-3 py-2 border-b border-[var(--border-color)]
-                    bg-[var(--bg-secondary)] shrink-0"
+                    bg-[var(--bg-window)] shrink-0"
       >
         <button
           onClick={onClose}
-          className="flex items-center gap-1 px-2 py-2 -ml-1 rounded-lg
-                     text-[var(--accent)] min-w-[44px] min-h-[44px]"
+          className="flex items-center gap-0.5 px-2 py-2 -ml-1 rounded-lg
+                     text-[var(--text-secondary)] min-w-[44px] min-h-[44px]
+                     transition-colors hover:text-[var(--text-primary)]"
           aria-label="Go back"
         >
-          <ChevronLeft className="w-5 h-5" />
-          <span className="text-sm">Back</span>
+          <ChevronLeft className="w-4 h-4" />
+          <span className="text-xs">Back</span>
         </button>
-        <span className="flex-1 text-center text-sm font-medium text-[var(--text-primary)] truncate pr-[60px]">
+        <span className="flex-1 text-center text-xs font-medium text-[var(--text-secondary)] truncate pr-[60px]">
           {title}
         </span>
       </div>
