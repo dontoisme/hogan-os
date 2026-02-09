@@ -15,6 +15,7 @@ import { SettingsWindow } from '../windows/SettingsWindow';
 import { JobJournalWindow } from '../windows/JobJournalWindow';
 import { AboutWindow } from '../windows/AboutWindow';
 import { ReadmeWindow } from '../windows/ReadmeWindow';
+import { PresentationsWindow } from '../windows/PresentationsWindow';
 import { Clippy } from '../Clippy';
 import { HackerMode } from '../HackerMode';
 import {
@@ -26,6 +27,7 @@ import {
   Settings,
   User,
   ScrollText,
+  Presentation,
 } from 'lucide-react';
 
 const desktopIcons = [
@@ -37,6 +39,7 @@ const desktopIcons = [
   { id: 'contact', label: 'Say Hi', icon: Mail, row: 2, col: 1 },
   { id: 'about', label: 'The Dude', icon: User, row: 3, col: 0 },
   { id: 'settings', label: 'Preferences', icon: Settings, row: 3, col: 1 },
+  { id: 'presentations', label: 'Presentations', icon: Presentation, row: 4, col: 0 },
 ];
 
 const windowComponents: Record<string, React.ComponentType> = {
@@ -48,6 +51,7 @@ const windowComponents: Record<string, React.ComponentType> = {
   settings: SettingsWindow,
   'job-journal': JobJournalWindow,
   about: AboutWindow,
+  presentations: PresentationsWindow,
 };
 
 const windowTitles: Record<string, string> = {
@@ -59,6 +63,7 @@ const windowTitles: Record<string, string> = {
   settings: 'Preferences',
   'job-journal': 'Job Journal',
   about: 'The Dude',
+  presentations: 'Presentations',
 };
 
 const windowIcons: Record<string, string> = {
@@ -70,6 +75,7 @@ const windowIcons: Record<string, string> = {
   settings: 'settings',
   'job-journal': 'chart',
   about: 'user',
+  presentations: 'presentation',
 };
 
 export function Desktop() {
