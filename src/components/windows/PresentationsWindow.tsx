@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { presentations, Presentation } from '@/data/presentations';
 import { SlideViewer } from '@/components/presentations/SlideViewer';
 import { jobJournalSlides } from '@/components/presentations/slides/JobJournalCaseStudy';
+import { healthTechSlides } from '@/components/presentations/slides/HealthTechCaseStudy';
 import { Presentation as PresentationIcon, Calendar, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const slideDecks: Record<string, React.ComponentType[]> = {
   'job-journal-case-study': jobJournalSlides,
+  'health-tech-case-study': healthTechSlides,
 };
 
 export function PresentationsWindow() {

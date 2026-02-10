@@ -19,4 +19,14 @@ export const presentations: Presentation[] = [
     slideCount: 18,
     tags: ['AI', 'Product Management', 'Case Study', 'Demo'],
   },
+  {
+    id: 'health-tech-case-study',
+    title: 'The 73% Problem',
+    subtitle: 'Data-Driven Growth Strategy for Senior Healthcare AI',
+    description:
+      'How 72 PostHog insights in 12 days uncovered a 97.5% retention signal, identified five mental models blocking elderly users, and produced a strategic roadmap to 6.5x DAU/MAU improvement.',
+    date: 'November 2025',
+    slideCount: 16,
+    tags: ['Healthcare AI', 'Growth', 'Analytics', 'Strategy'],
+  },
 ];
