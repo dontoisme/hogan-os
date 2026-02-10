@@ -535,6 +535,7 @@ function DemoDashboardSlide() {
       problemColor="text-red-400"
       problemBg="bg-red-500/20"
       solution={solution}
+      screenshotSrc="/images/job-journal/dashboard.png"
       screenshotAlt="Dashboard"
       screenshotCaption={caption}
     />
@@ -550,6 +551,7 @@ function DemoScoringSlide() {
       problemColor="text-yellow-400"
       problemBg="bg-yellow-500/20"
       solution={solution}
+      screenshotSrc="/images/job-journal/scoring.png"
       screenshotAlt="Scoring Output"
       screenshotCaption={caption}
     />
@@ -565,6 +567,7 @@ function DemoResumeSlide() {
       problemColor="text-blue-400"
       problemBg="bg-blue-500/20"
       solution={solution}
+      screenshotSrc="/images/job-journal/corpus.png"
       screenshotAlt="Resume Generation"
       screenshotCaption={caption}
     />
@@ -580,6 +583,7 @@ function DemoIntegrationsSlide() {
       problemColor="text-green-400"
       problemBg="bg-green-500/20"
       solution={solution}
+      screenshotSrc="/images/job-journal/map.png"
       screenshotAlt="Gmail Integration"
       screenshotCaption={caption}
     >
@@ -606,6 +610,7 @@ function DemoCLISlide() {
       problemColor="text-purple-400"
       problemBg="bg-purple-500/20"
       solution={solution}
+      screenshotSrc="/images/job-journal/cli.png"
       screenshotAlt="Terminal CLI"
       screenshotCaption={caption}
     />

@@ -100,13 +100,13 @@ export function Desktop() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Auto-open "Start Here" window after 2 seconds on first load
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      openWindow('readme', windowTitles['readme'], windowIcons['readme']);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // Auto-open disabled — visitors explore on their own
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     openWindow('readme', windowTitles['readme'], windowIcons['readme']);
+  //   }, 2000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const handleIconDoubleClick = (id: string) => {
     openWindow(id, windowTitles[id] || id, windowIcons[id] || 'file', windowSizeOverrides[id]);
