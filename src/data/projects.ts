@@ -79,6 +79,7 @@ export const projects: Project[] = [
     links: {
       github: 'https://github.com/dontoisme/agent-commerce',
     },
+    images: ['/images/agent-commerce/demo-flow.png'],
   },
   {
     id: 'hogan-os',
