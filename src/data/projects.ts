@@ -68,6 +68,19 @@ export const projects: Project[] = [
     },
   },
   {
+    id: 'agent-commerce',
+    title: 'agent-pay',
+    description: 'CLI-native transaction confirmation layer for AI agent commerce. Touch ID-confirmed payments from the terminal.',
+    longDescription: 'CLI agents like Claude Code can recommend tools but can\'t buy them. Browser agents (ChatGPT, Perplexity) have full checkout flows, but terminal agents hit a wall — the user has to leave the terminal, sign up in a browser, copy an API key, and come back. That\'s 5-15 minutes of broken flow every time.\n\nagent-pay bridges that gap. It connects macOS Touch ID to Stripe\'s Shared Payment Tokens so a CLI agent can trigger a biometric payment confirmation without leaving the terminal. The full flow — discover service, confirm with fingerprint, process payment, receive credentials, configure MCP server — takes about 10 seconds.\n\nThe project started as a deep research effort into the agent commerce landscape: Stripe ACP, Google AP2/UCP, Visa TAP, Mastercard Agentic Tokens, and more. Six research documents map the protocols, identity layers, compliance requirements, and the specific CLI gap. The spec defines the architecture, Touch ID confirmation flow, and integration points with existing protocols.\n\nThe prototype is a TypeScript CLI + compiled Swift binary. Touch ID triggers from a terminal process (underdocumented by Apple but it works), the vault stores payment tokens in macOS Keychain, and the Stripe adapter handles SPT creation and payment processing. The whole thing compiles clean and the biometric prompt fires.\n\nThis is a product insight disguised as a side project: the protocols exist, the payment rails exist, the identity layer exists. The missing piece is a 10-second UX that connects them from the terminal.',
+    tech: ['TypeScript', 'Swift', 'Stripe', 'Touch ID', 'macOS Keychain', 'MCP'],
+    status: 'in-progress',
+    tier: 1,
+    featured: true,
+    links: {
+      github: 'https://github.com/dontoisme/agent-commerce',
+    },
+  },
+  {
     id: 'hogan-os',
     title: 'HoganOS',
     description: 'This portfolio site. A desktop OS metaphor built with Next.js and too much nostalgia.',
