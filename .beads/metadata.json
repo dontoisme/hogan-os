@@ -1,0 +1,8 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "server",
+  "dolt_database": "hogan_os",
+  "project_id": "ae9aa107-f316-4421-bb12-17e68b30255f",
+  "global_dolt_database": "beads_global"
+}
