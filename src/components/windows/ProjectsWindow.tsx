@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { projects, Project } from '@/data/projects';
 import { specimens } from '@/data/fieldGuide';
 import { useWindowStore } from '@/stores/windowStore';
@@ -63,6 +64,33 @@ export function ProjectsWindow() {
               {selectedProject.status}
             </span>
           </div>
+
+          {/* Screenshots */}
+          {selectedProject.images && selectedProject.images.length > 0 && (
+            <div className="mb-6">
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {selectedProject.images.map((src) => (
+                  <Image
+                    key={src}
+                    src={src}
+                    alt={`${selectedProject.title} screenshot`}
+                    width={368}
+                    height={800}
+                    unoptimized
+                    className={cn(
+                      'h-72 w-auto shrink-0 rounded-lg object-contain',
+                      'border border-[var(--border-color)] bg-[var(--bg-tertiary)]'
+                    )}
+                  />
+                ))}
+              </div>
+              {selectedProject.imagesCaption && (
+                <p className="text-xs text-[var(--text-muted)] mt-1">
+                  {selectedProject.imagesCaption}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Long Description */}
           {selectedProject.longDescription && (
@@ -147,12 +175,25 @@ export function ProjectsWindow() {
               >
                 <FolderOpen className="w-5 h-5 text-white" />
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <h3 className="font-semibold text-[var(--text-primary)] truncate">{project.title}</h3>
                 <p className="text-sm text-[var(--text-secondary)] line-clamp-2 mt-1">
                   {project.description}
                 </p>
               </div>
+              {project.images?.[0] && (
+                <Image
+                  src={project.images[0]}
+                  alt=""
+                  width={56}
+                  height={96}
+                  unoptimized
+                  className={cn(
+                    'w-14 h-24 shrink-0 rounded-md object-cover object-top',
+                    'border border-[var(--border-color)] bg-[var(--bg-tertiary)]'
+                  )}
+                />
+              )}
             </div>
 
             {/* Tech badges */}

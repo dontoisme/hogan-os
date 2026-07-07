@@ -12,6 +12,7 @@ export interface Project {
     website?: string;
   };
   images?: string[];
+  imagesCaption?: string;
   featured?: boolean;
 }
 
@@ -28,6 +29,11 @@ export const projects: Project[] = [
     links: {
       github: 'https://github.com/dontoisme/job-journal',
     },
+    images: [
+      '/images/job-journal/dashboard.png',
+      '/images/job-journal/cli.png',
+      '/images/job-journal/resume-output.png',
+    ],
   },
   {
     id: 'darwin',
@@ -41,6 +47,13 @@ export const projects: Project[] = [
     links: {
       github: 'https://github.com/dontoisme/darwin',
     },
+    images: [
+      '/images/projects/darwin/capture-timeline.png',
+      '/images/projects/darwin/capture-discover.png',
+      '/images/projects/darwin/capture-species.png',
+    ],
+    imagesCaption:
+      'Screens Darwin captured during its demo run against DinoCodex, its dinosaur-encyclopedia test app.',
   },
   {
     id: 'squabble',
@@ -54,6 +67,11 @@ export const projects: Project[] = [
     links: {
       github: 'https://github.com/dontoisme/Squabble',
     },
+    images: [
+      '/images/projects/squabble/player.png',
+      '/images/projects/squabble/library.png',
+      '/images/projects/squabble/guild.png',
+    ],
   },
   {
     id: 'gmail-quick-filter',
