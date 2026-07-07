@@ -16,6 +16,7 @@ import {
   StickyNote,
   Trash2,
   ListTodo,
+  PawPrint,
 } from 'lucide-react';
 import { useWindowStore } from '@/stores/windowStore';
 import type { OriginRect } from '@/stores/windowStore';
@@ -70,6 +71,20 @@ export const apps: AppDefinition[] = [
     startMenuLabel: 'Projects',
     onMobile: true,
     mobileDescription: 'What I build',
+  },
+  {
+    id: 'field-guide',
+    title: 'Field Guide',
+    mobileTitle: 'Field Guide',
+    icon: PawPrint,
+    iconKey: 'folder',
+    Window: load(() => import('@/components/windows/FieldGuideWindow').then(m => m.FieldGuideWindow)),
+    size: { width: 920, height: 640 },
+    onDesktop: true,
+    showInStartMenu: true,
+    startMenuLabel: 'Field Guide',
+    onMobile: true,
+    mobileDescription: 'The whole zoo',
   },
   {
     id: 'resume',

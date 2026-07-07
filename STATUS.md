@@ -1,10 +1,12 @@
 # HoganOS — Status
 
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 **Mission:** Turn hoganos into a recruiter-ready portfolio link for the PM job search. Full plan: [docs/IMPROVEMENT-PLAN.md](docs/IMPROVEMENT-PLAN.md). Tasks in beads (`bd list`, `bd ready`).
 
 ## Where things stand
+
+- ✅ **Field Guide app shipped** (`hogan-os-5yj`) — the "zoo": a naturalist's field guide cataloguing all 38 real projects from `~/Projects` + `~/Documents/GitHub` as specimens (faux-Latin binomials, conservation statuses, real commit dates, tech-stack habitats, file-count size classes). Filterable by wing + search, detail plates per specimen. Desktop icon (paw print), Start menu, mobile grid, `open zoo` in Terminal, cross-link from Side Quests. Data in `src/data/fieldGuide.ts` — curated by hand from a live directory survey (private stuff excluded: Brain has no link, micasa/emails/dupes omitted). Verified in-browser: cards, plates, filters, search empty state, terminal command all work.
 
 - ✅ **P0 Epics 1–2 (credibility + first impression): LIVE IN PROD** — real resume PDF, honest contact, de-Bonterra'd, single source of truth (`profile.ts`), MSK role added, boot hero, working OG/link previews, SEO basics.
 - ✅ **Epic 7 — Sizzle: built and verified locally, committed, NOT yet pushed.**

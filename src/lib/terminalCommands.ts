@@ -75,7 +75,7 @@ const helpLines: TermLine[] = [
   line('  git log --oneline     the career, as commits'),
   line('  ls [-la]              look around'),
   line('  man don               the manual'),
-  line('  open <app>            open resume | projects | experience | contact'),
+  line('  open <app>            open resume | projects | experience | contact | zoo'),
   line('  sudo hire don         you know you want to'),
   line('  make coffee           worth a try'),
   line('  clear                 clean slate'),
@@ -116,6 +116,7 @@ export function runCommand(rawInput: string): CommandResult {
             line('-rw-r--r--   don  staff   .growth-mindset', 'muted'),
             line('-rw-r--r--   don  staff   .konami-code          (↑↑↓↓←→←→BA)', 'muted'),
             line('drwxr-xr-x   don  staff   SideQuests/'),
+            line('drwxr-xr-x   don  staff   FieldGuide/           (the whole zoo)'),
             line('-rw-r--r--   don  staff   resume.pdf'),
             line('-rw-r--r--   don  staff   thoughts.txt'),
           ],
@@ -123,7 +124,7 @@ export function runCommand(rawInput: string): CommandResult {
       }
       return {
         lines: [
-          line('SideQuests/    resume.pdf    thoughts.txt'),
+          line('SideQuests/    FieldGuide/    resume.pdf    thoughts.txt'),
         ],
       };
 
@@ -152,7 +153,8 @@ export function runCommand(rawInput: string): CommandResult {
       return { lines: [line(`sudo: only 'sudo hire don' is permitted on this system`, 'error')] };
 
     case 'open': {
-      const valid = ['resume', 'projects', 'experience', 'contact', 'about', 'readme'];
+      const valid = ['resume', 'projects', 'experience', 'contact', 'about', 'readme', 'zoo'];
+      if (arg === 'zoo') return { lines: [line('Opening the field guide... mind the dingo.', 'muted')], action: { open: 'field-guide' } };
       if (valid.includes(arg)) return { lines: [line(`Opening ${arg}...`, 'muted')], action: { open: arg } };
       return { lines: [line(`open: '${arg || ''}' — try: open ${valid.slice(0, 4).join(' | ')}`, 'error')] };
     }

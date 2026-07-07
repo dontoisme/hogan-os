@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { projects, Project } from '@/data/projects';
+import { specimens } from '@/data/fieldGuide';
 import { useWindowStore } from '@/stores/windowStore';
-import { ExternalLink, Github, FolderOpen } from 'lucide-react';
+import { openAppWindow } from '@/data/apps';
+import { ExternalLink, Github, FolderOpen, PawPrint } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function ProjectsWindow() {
@@ -189,6 +191,19 @@ export function ProjectsWindow() {
           </button>
         ))}
       </div>
+
+      {/* The highlights end here — the full catalog lives in the Field Guide */}
+      <button
+        onClick={() => openAppWindow('field-guide')}
+        className={cn(
+          'mt-4 w-full p-3 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm',
+          'border border-dashed border-[var(--border-color)] text-[var(--text-secondary)]',
+          'hover:border-[var(--accent)] hover:text-[var(--accent)]'
+        )}
+      >
+        <PawPrint className="w-4 h-4" />
+        These are the highlights. Browse all {specimens.length} species in the Field Guide →
+      </button>
     </div>
   );
 }
