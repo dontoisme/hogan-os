@@ -9,7 +9,6 @@ import {
   Mail,
   User,
   Settings,
-  Presentation,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { playRetroSound } from '@/lib/retroSounds';
@@ -22,7 +21,7 @@ interface MobileApp {
 }
 
 const mobileApps: MobileApp[] = [
-  { id: 'readme', label: 'Start Here', icon: ScrollText, description: 'Role fit & intro' },
+  { id: 'readme', label: 'Start Here', icon: ScrollText, description: 'Who I am & what I do' },
   { id: 'projects', label: 'Side Quests', icon: FolderOpen, description: 'What I build' },
   { id: 'resume', label: 'Resume', icon: FileText, description: 'The formal stuff' },
   { id: 'experience', label: 'The Journey', icon: Briefcase, description: 'Work history' },
@@ -30,7 +29,6 @@ const mobileApps: MobileApp[] = [
   { id: 'contact', label: 'Say Hi', icon: Mail, description: 'Get in touch' },
   { id: 'about', label: 'The Dude', icon: User, description: 'Who I am' },
   { id: 'settings', label: 'Preferences', icon: Settings, description: 'Theme & sound' },
-  { id: 'presentations', label: 'Presentations', icon: Presentation, description: 'Case studies' },
 ];
 
 interface MobileAppGridProps {

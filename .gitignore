@@ -44,3 +44,6 @@ next-env.d.ts
 .dolt/
 *.db
 .beads-credential-key
+
+# firebase cli noise
+firebase-debug.log*

@@ -1,6 +1,7 @@
 'use client';
 
-import { skills, getSkillsByCategory, categories } from '@/data/skills';
+import { getSkillsByCategory, categories } from '@/data/skills';
+import { profile } from '@/data/profile';
 import { cn } from '@/lib/utils';
 import { User, MapPin, Bike, Camera, Mountain, Gamepad2, Fish } from 'lucide-react';
 
@@ -19,11 +20,11 @@ export function AboutWindow() {
             <User className="w-12 h-12 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-[var(--text-primary)]">Don Hogan</h1>
-            <p className="text-lg text-[var(--accent)] mb-2">Principal Product Manager – Growth</p>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">{profile.name}</h1>
+            <p className="text-lg text-[var(--accent)] mb-2">{profile.title}</p>
             <p className="flex items-center gap-2 text-[var(--text-muted)]">
               <MapPin className="w-4 h-4" />
-              Austin, TX
+              {profile.location}
             </p>
             <p className="text-sm text-[var(--text-muted)] mt-1 italic">
               &quot;Just a dude having fun.&quot;
@@ -36,10 +37,11 @@ export function AboutWindow() {
           <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">About Me</h2>
           <div className="space-y-4 text-[var(--text-secondary)]">
             <p>
-              I&apos;m a Growth Product Leader with a track record of turning experimentation and data
-              into real business results. I&apos;ve spent 8+ years helping companies like Indeed,
-              Mattermost, and ZenBusiness figure out what makes users tick and how to make
-              products they actually want to use.
+              I&apos;m a product leader with a track record of turning experimentation and data
+              into real business results — at companies like Indeed, Mattermost, ZenBusiness,
+              and now Memorial Sloan Kettering, where I&apos;m improving how new cancer patients
+              find and start care. I figure out what makes users tick and how to make products
+              they actually want to use.
             </p>
             <p>
               I describe myself as a hobbyist who tries to make a living solving big problems.

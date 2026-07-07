@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { profile } from "@/data/profile";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,21 +13,41 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const title = `${profile.name} — ${profile.title} | HoganOS`;
+
 export const metadata: Metadata = {
-  title: "HoganOS | Don Hogan - Principal Product Manager, Growth",
-  description: "Portfolio of Don Hogan - Principal Product Manager specializing in Growth, A/B Testing, and Product-Led Growth. 8+ years helping companies like Indeed, Mattermost, and ZenBusiness turn experimentation into results.",
-  keywords: ["product manager", "growth PM", "A/B testing", "experimentation", "PLG", "product-led growth", "portfolio", "HoganOS", "conversion optimization"],
-  authors: [{ name: "Don Hogan" }],
-  icons: {
-    icon: '/images/logo/hoganos-logo.png',
-    apple: '/images/logo/hoganos-logo.png',
-  },
+  metadataBase: new URL(profile.siteUrl),
+  title,
+  description: profile.metaDescription,
+  authors: [{ name: profile.name }],
   openGraph: {
-    title: "HoganOS | Don Hogan - Principal Product Manager, Growth",
-    description: "Just a dude having fun. Growth PM with a track record of turning experimentation into real business results.",
+    title,
+    description: profile.metaDescription,
+    url: profile.siteUrl,
+    siteName: "HoganOS",
     type: "website",
-    images: ['/images/logo/hoganos-logo.png'],
   },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description: profile.metaDescription,
+  },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  jobTitle: profile.title,
+  email: `mailto:${profile.email}`,
+  url: profile.siteUrl,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Austin",
+    addressRegion: "TX",
+    addressCountry: "US",
+  },
+  sameAs: [profile.github, profile.linkedin],
 };
 
 export default function RootLayout({
@@ -39,6 +60,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         {children}
       </body>
     </html>

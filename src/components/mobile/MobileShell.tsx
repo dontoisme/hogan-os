@@ -15,7 +15,8 @@ import { ContactWindow } from '../windows/ContactWindow';
 import { SettingsWindow } from '../windows/SettingsWindow';
 import { JobJournalWindow } from '../windows/JobJournalWindow';
 import { AboutWindow } from '../windows/AboutWindow';
-import { PresentationsWindow } from '../windows/PresentationsWindow';
+import { profile } from '@/data/profile';
+import { OPEN_APP_EVENT, getRequestedApp } from '@/lib/openApp';
 
 const windowComponents: Record<string, React.ComponentType> = {
   readme: ReadmeWindow,
@@ -26,7 +27,6 @@ const windowComponents: Record<string, React.ComponentType> = {
   settings: SettingsWindow,
   'job-journal': JobJournalWindow,
   about: AboutWindow,
-  presentations: PresentationsWindow,
 };
 
 const appTitles: Record<string, string> = {
@@ -38,7 +38,6 @@ const appTitles: Record<string, string> = {
   settings: 'Preferences',
   'job-journal': 'Job Journal',
   about: 'The Dude',
-  presentations: 'Presentations',
 };
 
 const themeOrder: ThemeMode[] = ['dark', 'light', 'retro'];
@@ -53,6 +52,18 @@ export function MobileShell() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  // Open apps requested by the boot screen CTAs or the ?app= deep link
+  useEffect(() => {
+    const open = (id: string) => {
+      if (windowComponents[id]) setActiveApp(id);
+    };
+    const handler = (e: Event) => open((e as CustomEvent).detail?.id);
+    window.addEventListener(OPEN_APP_EVENT, handler);
+    const requested = getRequestedApp();
+    if (requested) open(requested);
+    return () => window.removeEventListener(OPEN_APP_EVENT, handler);
+  }, []);
 
   const cycleTheme = () => {
     const next = themeOrder[(themeOrder.indexOf(theme) + 1) % themeOrder.length];
@@ -71,9 +82,9 @@ export function MobileShell() {
       >
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <h1 className="text-base font-semibold text-[var(--text-primary)]">Don Hogan</h1>
+            <h1 className="text-base font-semibold text-[var(--text-primary)]">{profile.name}</h1>
             <p className="text-xs text-[var(--text-muted)]">
-              Principal Product Manager &ndash; Growth
+              {profile.title}
             </p>
           </div>
           <button

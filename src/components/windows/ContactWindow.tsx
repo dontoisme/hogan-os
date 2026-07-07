@@ -1,51 +1,28 @@
 'use client';
 
-import { useState } from 'react';
-import { Mail, Github, Linkedin, Send, Check, ExternalLink, Twitter } from 'lucide-react';
+import { Mail, Github, Linkedin, ExternalLink, FileText } from 'lucide-react';
+import { profile } from '@/data/profile';
 import { cn } from '@/lib/utils';
 
 export function ContactWindow() {
-  const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real app, this would send the form data
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormState({ name: '', email: '', message: '' });
-    }, 3000);
-  };
-
   const contactLinks = [
     {
-      label: 'Email',
-      value: 'don.r.hogan@gmail.com',
-      icon: Mail,
-      href: 'mailto:don.r.hogan@gmail.com',
-    },
-    {
       label: 'GitHub',
-      value: '@dontoisme',
+      value: profile.githubHandle,
       icon: Github,
-      href: 'https://github.com/dontoisme',
+      href: profile.github,
     },
     {
       label: 'LinkedIn',
-      value: 'in/dhogan',
+      value: profile.linkedinHandle,
       icon: Linkedin,
-      href: 'https://www.linkedin.com/in/dhogan/',
+      href: profile.linkedin,
     },
     {
-      label: 'X / Twitter',
-      value: '@donto',
-      icon: Twitter,
-      href: 'https://x.com/donto',
+      label: 'Resume',
+      value: 'Download PDF',
+      icon: FileText,
+      href: profile.resumePdf,
     },
   ];
 
@@ -54,124 +31,63 @@ export function ContactWindow() {
       <div className="max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Let&apos;s Connect</h1>
         <p className="text-[var(--text-secondary)] mb-6">
-          Looking for a Growth PM? Want to talk about A/B testing, fish catching, or Douglas Adams?
-          I&apos;m always down to chat.
+          Hiring a product leader? Want to talk growth experiments, health tech, fish catching,
+          or Douglas Adams? I&apos;m always down to chat.
         </p>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Contact Links */}
-          <div className="space-y-3">
-            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Find Me</h2>
-            {contactLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
+        {/* Primary CTA */}
+        <a
+          href={`mailto:${profile.email}?subject=Hello%20from%20HoganOS`}
+          className={cn(
+            'flex items-center gap-4 p-5 rounded-xl mb-6 transition-colors',
+            'bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white'
+          )}
+        >
+          <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+            <Mail className="w-6 h-6" />
+          </div>
+          <div className="flex-1">
+            <p className="font-semibold">Email me</p>
+            <p className="text-sm opacity-90">{profile.email}</p>
+          </div>
+          <ExternalLink className="w-4 h-4 opacity-75" />
+        </a>
+
+        {/* Other links */}
+        <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Elsewhere</h2>
+        <div className="space-y-3">
+          {contactLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'flex items-center gap-3 p-3 rounded-lg transition-colors',
+                'bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)]',
+                'border border-[var(--border-color)]'
+              )}
+            >
+              <div
                 className={cn(
-                  'flex items-center gap-3 p-3 rounded-lg transition-colors',
-                  'bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)]',
-                  'border border-[var(--border-color)]'
+                  'w-10 h-10 rounded-lg flex items-center justify-center',
+                  'bg-[var(--bg-tertiary)]'
                 )}
               >
-                <div
-                  className={cn(
-                    'w-10 h-10 rounded-lg flex items-center justify-center',
-                    'bg-[var(--bg-tertiary)]'
-                  )}
-                >
-                  <link.icon className="w-5 h-5 text-[var(--accent)]" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm text-[var(--text-muted)]">{link.label}</p>
-                  <p className="text-[var(--text-primary)] font-medium">{link.value}</p>
-                </div>
-                <ExternalLink className="w-4 h-4 text-[var(--text-muted)]" />
-              </a>
-            ))}
-          </div>
-
-          {/* Contact Form */}
-          <div>
-            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Send a Message</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-1">Name</label>
-                <input
-                  type="text"
-                  value={formState.name}
-                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  className={cn(
-                    'w-full px-3 py-2 rounded-lg transition-colors',
-                    'bg-[var(--bg-secondary)] border border-[var(--border-color)]',
-                    'text-[var(--text-primary)] placeholder-[var(--text-muted)]',
-                    'focus:outline-none focus:border-[var(--accent)]'
-                  )}
-                  placeholder="Your name"
-                  required
-                />
+                <link.icon className="w-5 h-5 text-[var(--accent)]" />
               </div>
-
-              <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-1">Email</label>
-                <input
-                  type="email"
-                  value={formState.email}
-                  onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  className={cn(
-                    'w-full px-3 py-2 rounded-lg transition-colors',
-                    'bg-[var(--bg-secondary)] border border-[var(--border-color)]',
-                    'text-[var(--text-primary)] placeholder-[var(--text-muted)]',
-                    'focus:outline-none focus:border-[var(--accent)]'
-                  )}
-                  placeholder="your@email.com"
-                  required
-                />
+              <div className="flex-1">
+                <p className="text-sm text-[var(--text-muted)]">{link.label}</p>
+                <p className="text-[var(--text-primary)] font-medium">{link.value}</p>
               </div>
-
-              <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-1">Message</label>
-                <textarea
-                  value={formState.message}
-                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className={cn(
-                    'w-full px-3 py-2 rounded-lg transition-colors resize-none',
-                    'bg-[var(--bg-secondary)] border border-[var(--border-color)]',
-                    'text-[var(--text-primary)] placeholder-[var(--text-muted)]',
-                    'focus:outline-none focus:border-[var(--accent)]'
-                  )}
-                  placeholder="What's on your mind?"
-                  rows={4}
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={submitted}
-                className={cn(
-                  'w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg',
-                  'font-medium transition-colors',
-                  submitted
-                    ? 'bg-green-500 text-white'
-                    : 'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)]'
-                )}
-              >
-                {submitted ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    Sent!
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    Send Message
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
+              <ExternalLink className="w-4 h-4 text-[var(--text-muted)]" />
+            </a>
+          ))}
         </div>
+
+        <p className="text-xs text-[var(--text-muted)] mt-6">
+          Email is fastest — I usually reply within a day.
+        </p>
       </div>
     </div>
   );

@@ -6,28 +6,21 @@
 
 ## Where things stand
 
-- ✅ Site concept built and live (Vercel auto-deploy on push to `main`)
-- ✅ Three-agent review complete (content, UX, technical) — findings in the plan doc
-- ✅ Improvement plan approved; 6 epics / 28 tasks created in beads
-- ⬜ No improvement work started yet
+- ✅ Three-agent review + improvement plan approved (6 epics / 28 tasks)
+- ✅ **Epic 1 — Credibility (P0): DONE.** Resume download wired to the real General-archetype PDF; fake contact form replaced with honest mailto/LinkedIn/GitHub CTAs; "Start Here" rewritten company-agnostic (Bonterra content gone); `src/data/profile.ts` is the single source of truth with resume-verified metrics; experience updated with **current MSK role** + GetHealthy (Medicare/CMS/EMR story now visible); customization.ts and firebase-debug.log removed.
+- ✅ **Epic 2 — First impression (P0): DONE.** Boot/hero overlay (server-rendered, CTAs deep-link into windows, remembered dismissal, Enter/Esc skip); `metadataBase` + dynamic 1200×630 OG image + twitter card (LinkedIn/Slack previews now work); robots.txt, sitemap.xml, JSON-LD Person; favicon fixed.
+- ✅ Bonterra-interview deck pulled from the public site per Don (Presentations surface removed; deck files kept for future Wellcore/Mattermost decks).
+- ✅ Bonus: `?app=<id>` deep links work on both shells (half of `hogan-os-6oi.1`).
+- ✅ Verified: build/tsc clean, browser-tested (boot flow, CTAs, PDF download 200, deep link, mobile shell, return-visit suppression).
+- ⚠️ **Committed locally, not pushed.** Push to `main` = production deploy on Vercel.
 
-## The critical path (P0 — do these before sharing the link anywhere)
+## Next up (P1)
 
-1. **Epic 1 — Credibility** (`hogan-os-0g7`): fix dead resume download, fake contact form, Bonterra-specific "Start Here", contradictory metrics
-2. **Epic 2 — First impression** (`hogan-os-ssp`): boot/hero overlay, fix broken LinkedIn/Slack link previews (localhost OG image), SEO basics
+- Epic 3 (`hogan-os-2wn`): Wellcore + Mattermost case study decks; outcome-first project copy
+- Epic 4 (`hogan-os-6oi`): history/back-button integration, keyboard access, contrast/reduced-motion fixes
+- Epic 5 (`hogan-os-919`): PostHog analytics
+- Epic 6 (`hogan-os-jlw`, P2): README, lint (3 pre-existing errors), asset diet, code splitting
 
 ## Blocked on Don
 
-| Bead | Needed |
-|------|--------|
-| `hogan-os-0g7.1` | Real resume PDF |
-| `hogan-os-0g7.2` | Ruling on contradictory metrics (300 vs 600%, 8 vs 12 yrs, title, @donto) |
-| `hogan-os-ssp.1` | Production URL / donhogan.com status |
-| `hogan-os-2wn.1` | Keep Bonterra-interview deck public as-is? |
-
-## After P0
-
-- Epic 3 (P1): Wellcore + Mattermost case study decks, outcome-first project copy
-- Epic 4 (P1): deep links + back button, keyboard access, contrast/reduced-motion
-- Epic 5 (P1): PostHog analytics
-- Epic 6 (P2): README, lint, asset diet, code splitting
+Nothing — all four input questions answered 2026-07-06.

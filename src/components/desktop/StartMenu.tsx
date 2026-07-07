@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { playRetroSound } from '@/lib/retroSounds';
+import { profile } from '@/data/profile';
 import Image from 'next/image';
 
 interface StartMenuProps {
@@ -23,6 +24,7 @@ interface StartMenuProps {
 }
 
 const menuItems = [
+  { id: 'readme', label: 'Start Here', icon: FileText },
   { id: 'projects', label: 'Projects', icon: FolderOpen },
   { id: 'resume', label: 'Resume', icon: FileText },
   { id: 'experience', label: 'Experience', icon: Briefcase },
@@ -90,8 +92,8 @@ export function StartMenu({ onClose }: StartMenuProps) {
             className="rounded-lg"
           />
           <div>
-            <h2 className="text-sm font-semibold text-[var(--text-primary)]">Don Hogan</h2>
-            <p className="text-xs text-[var(--text-muted)]">Principal PM &ndash; Growth</p>
+            <h2 className="text-sm font-semibold text-[var(--text-primary)]">{profile.name}</h2>
+            <p className="text-xs text-[var(--text-muted)]">{profile.title}</p>
           </div>
         </div>
       </div>

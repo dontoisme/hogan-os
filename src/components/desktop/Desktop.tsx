@@ -5,6 +5,7 @@ import { useThemeStore } from '@/stores/themeStore';
 import { useWindowStore } from '@/stores/windowStore';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 import { useRetroSounds } from '@/hooks/useRetroSounds';
+import { OPEN_APP_EVENT, getRequestedApp } from '@/lib/openApp';
 import { DesktopIcon } from './DesktopIcon';
 import { Taskbar } from './Taskbar';
 import { Window } from '../windows/Window';
@@ -16,7 +17,6 @@ import { SettingsWindow } from '../windows/SettingsWindow';
 import { JobJournalWindow } from '../windows/JobJournalWindow';
 import { AboutWindow } from '../windows/AboutWindow';
 import { ReadmeWindow } from '../windows/ReadmeWindow';
-import { PresentationsWindow } from '../windows/PresentationsWindow';
 import { Clippy } from '../Clippy';
 import { HackerMode } from '../HackerMode';
 import {
@@ -28,7 +28,6 @@ import {
   Settings,
   User,
   ScrollText,
-  Presentation,
 } from 'lucide-react';
 
 const desktopIcons = [
@@ -40,7 +39,6 @@ const desktopIcons = [
   { id: 'contact', label: 'Say Hi', icon: Mail, row: 2, col: 1 },
   { id: 'about', label: 'The Dude', icon: User, row: 3, col: 0 },
   { id: 'settings', label: 'Preferences', icon: Settings, row: 3, col: 1 },
-  { id: 'presentations', label: 'Presentations', icon: Presentation, row: 4, col: 0 },
 ];
 
 const windowComponents: Record<string, React.ComponentType> = {
@@ -52,7 +50,6 @@ const windowComponents: Record<string, React.ComponentType> = {
   settings: SettingsWindow,
   'job-journal': JobJournalWindow,
   about: AboutWindow,
-  presentations: PresentationsWindow,
 };
 
 const windowTitles: Record<string, string> = {
@@ -64,7 +61,6 @@ const windowTitles: Record<string, string> = {
   settings: 'Preferences',
   'job-journal': 'Job Journal',
   about: 'The Dude',
-  presentations: 'Presentations',
 };
 
 const windowIcons: Record<string, string> = {
@@ -76,12 +72,9 @@ const windowIcons: Record<string, string> = {
   settings: 'settings',
   'job-journal': 'chart',
   about: 'user',
-  presentations: 'presentation',
 };
 
-const windowSizeOverrides: Record<string, { size: { width: number; height: number } }> = {
-  presentations: { size: { width: 920, height: 700 } },
-};
+const windowSizeOverrides: Record<string, { size: { width: number; height: number } }> = {};
 
 export function Desktop() {
   const { theme } = useThemeStore();
@@ -100,13 +93,18 @@ export function Desktop() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Auto-open disabled — visitors explore on their own
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     openWindow('readme', windowTitles['readme'], windowIcons['readme']);
-  //   }, 2000);
-  //   return () => clearTimeout(timer);
-  // }, []);
+  // Open apps requested by the boot screen CTAs or the ?app= deep link
+  useEffect(() => {
+    const open = (id: string) => {
+      if (!windowComponents[id]) return;
+      openWindow(id, windowTitles[id] || id, windowIcons[id] || 'file', windowSizeOverrides[id]);
+    };
+    const handler = (e: Event) => open((e as CustomEvent).detail?.id);
+    window.addEventListener(OPEN_APP_EVENT, handler);
+    const requested = getRequestedApp();
+    if (requested) open(requested);
+    return () => window.removeEventListener(OPEN_APP_EVENT, handler);
+  }, [openWindow]);
 
   const handleIconDoubleClick = (id: string) => {
     openWindow(id, windowTitles[id] || id, windowIcons[id] || 'file', windowSizeOverrides[id]);
