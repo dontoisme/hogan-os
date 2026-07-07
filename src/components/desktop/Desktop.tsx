@@ -38,6 +38,26 @@ export function Desktop() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  // The "things to do" sticky lives on the right third of the desktop by
+  // default — like a real sticky note, it's there when you sit down.
+  // (Declared before the deep-link effect so a ?app= window opens above it.)
+  useEffect(() => {
+    const { openWindow, isWindowOpen } = useWindowStore.getState();
+    if (isWindowOpen('todo')) return;
+    const app = getApp('todo');
+    if (!app) return;
+    const width = app.size?.width ?? 340;
+    const height = app.size?.height ?? 540;
+    openWindow('todo', app.title, app.iconKey, {
+      size: { width, height },
+      minSize: app.minSize,
+      position: {
+        x: Math.max(24, window.innerWidth - width - 28),
+        y: Math.max(16, Math.min(90, window.innerHeight - height - 60)),
+      },
+    });
+  }, []);
+
   // Open apps requested by the boot screen CTAs or the ?app= deep link
   useEffect(() => {
     const handler = (e: Event) => {

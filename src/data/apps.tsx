@@ -15,6 +15,7 @@ import {
   SquareTerminal,
   StickyNote,
   Trash2,
+  ListTodo,
 } from 'lucide-react';
 import { useWindowStore } from '@/stores/windowStore';
 import type { OriginRect } from '@/stores/windowStore';
@@ -187,6 +188,22 @@ export const apps: AppDefinition[] = [
     showInStartMenu: false,
     onMobile: true,
     mobileDescription: 'Nothing to see here',
+  },
+  {
+    // No desktop icon (11-icon cap) — it auto-opens as a sticky instead
+    id: 'todo',
+    title: 'things to do.txt',
+    mobileTitle: 'Things To Do',
+    icon: ListTodo,
+    iconKey: 'note',
+    Window: load(() => import('@/components/windows/TodoWindow').then(m => m.TodoWindow)),
+    size: { width: 340, height: 540 },
+    minSize: { width: 280, height: 340 },
+    onDesktop: false,
+    showInStartMenu: true,
+    startMenuLabel: 'Things To Do',
+    onMobile: true,
+    mobileDescription: 'The scavenger hunt',
   },
 ];
 
