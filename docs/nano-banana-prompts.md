@@ -23,5 +23,7 @@ Post-processing per image: remove white background to transparency, trim, save t
 `public/images/dingo/<name>.png`. Rendered in-app at 2-3x with `image-rendering: pixelated`.
 
 ## Status
-- [ ] 1 idle · [ ] 2 wave · [ ] 3 walk-1 · [ ] 4 walk-2 · [ ] 5 sleep · [ ] 6 confused
-(Cap 5 this session — #6 may roll to next session.)
+- [x] ALL 6 DONE — 2026-07-07, via a single ChatGPT-generated sprite sheet
+  (`docs/dingo-sprite-sheet.png`) instead of nano banana (which stayed
+  quota-blocked). Sliced/keyed/normalized with ImageMagick into
+  `public/images/dingo/`. These prompts kept for future sprite additions.
