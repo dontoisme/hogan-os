@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function NotFound() {
   const [showCursor, setShowCursor] = useState(true);
@@ -57,9 +58,22 @@ export default function NotFound() {
         </div>
 
         {/* Footer */}
-        <div className="mt-16 text-xs text-[#aaaaaa]">
-          <p>Error Code: 404_PAGE_NOT_FOUND</p>
-          <p>System halted. Just kidding, this is a portfolio website.</p>
+        <div className="mt-16 text-xs text-[#aaaaaa] flex items-end justify-between gap-4">
+          <div>
+            <p>Error Code: 404_PAGE_NOT_FOUND</p>
+            <p>System halted. Just kidding, this is a portfolio website.</p>
+          </div>
+          <div className="flex flex-col items-center shrink-0">
+            <Image
+              src="/images/dingo/dingo-confused.png"
+              alt="A confused pixel-art dingo"
+              width={64}
+              height={64}
+              className="pixelated"
+              unoptimized
+            />
+            <p className="mt-1">the dingo is also lost</p>
+          </div>
         </div>
       </div>
     </div>

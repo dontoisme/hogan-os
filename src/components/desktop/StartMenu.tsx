@@ -1,38 +1,17 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useWindowStore } from '@/stores/windowStore';
-import {
-  FolderOpen,
-  FileText,
-  Briefcase,
-  Mail,
-  BarChart3,
-  Settings,
-  User,
-  Github,
-  Linkedin,
-  ExternalLink,
-} from 'lucide-react';
+import { Github, Linkedin, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { playRetroSound } from '@/lib/retroSounds';
 import { profile } from '@/data/profile';
+import { startMenuApps, openAppWindow } from '@/data/apps';
+import { toOrigin } from '@/lib/openApp';
 import Image from 'next/image';
 
 interface StartMenuProps {
   onClose: () => void;
 }
-
-const menuItems = [
-  { id: 'readme', label: 'Start Here', icon: FileText },
-  { id: 'projects', label: 'Projects', icon: FolderOpen },
-  { id: 'resume', label: 'Resume', icon: FileText },
-  { id: 'experience', label: 'Experience', icon: Briefcase },
-  { id: 'job-journal', label: 'Job Journal', icon: BarChart3 },
-  { id: 'contact', label: 'Contact', icon: Mail },
-  { id: 'about', label: 'About Me', icon: User },
-  { id: 'settings', label: 'Settings', icon: Settings },
-];
 
 const externalLinks = [
   { label: 'GitHub', icon: Github, url: 'https://github.com/dontoisme' },
@@ -40,7 +19,6 @@ const externalLinks = [
 ];
 
 export function StartMenu({ onClose }: StartMenuProps) {
-  const { openWindow } = useWindowStore();
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,9 +43,9 @@ export function StartMenu({ onClose }: StartMenuProps) {
     };
   }, [onClose]);
 
-  const handleItemClick = (id: string, title: string) => {
+  const handleItemClick = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     playRetroSound('click');
-    openWindow(id, title, id);
+    openAppWindow(id, toOrigin(e.currentTarget.getBoundingClientRect()));
     onClose();
   };
 
@@ -100,17 +78,17 @@ export function StartMenu({ onClose }: StartMenuProps) {
 
       {/* Menu Items */}
       <div className="p-1.5">
-        {menuItems.map((item) => (
+        {startMenuApps.map((app) => (
           <button
-            key={item.id}
+            key={app.id}
             className={cn(
               'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
               'hover:bg-[var(--bg-tertiary)] text-left'
             )}
-            onClick={() => handleItemClick(item.id, item.label)}
+            onClick={(e) => handleItemClick(e, app.id)}
           >
-            <item.icon className="w-4 h-4 text-[var(--text-muted)]" />
-            <span className="text-sm text-[var(--text-primary)]">{item.label}</span>
+            <app.icon className="w-4 h-4 text-[var(--text-muted)]" />
+            <span className="text-sm text-[var(--text-primary)]">{app.startMenuLabel ?? app.title}</span>
           </button>
         ))}
       </div>

@@ -1,23 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { playRetroSound } from '@/lib/retroSounds';
+import { registerRect } from '@/lib/rectRegistry';
 
 interface DesktopIconProps {
   id: string;
   label: string;
   icon: LucideIcon;
-  onDoubleClick: () => void;
+  onOpen: (rect: DOMRect | null) => void;
 }
 
-export function DesktopIcon({ id, label, icon: Icon, onDoubleClick }: DesktopIconProps) {
+export function DesktopIcon({ id, label, icon: Icon, onOpen }: DesktopIconProps) {
   const [isSelected, setIsSelected] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  const setRef = useCallback(
+    (el: HTMLButtonElement | null) => {
+      buttonRef.current = el;
+      registerRect(`icon:${id}`, el);
+    },
+    [id]
+  );
 
   const handleClick = () => {
     setIsSelected(true);
     playRetroSound('click');
+  };
+
+  const handleOpen = () => {
+    onOpen(buttonRef.current?.getBoundingClientRect() ?? null);
   };
 
   const handleBlur = () => {
@@ -25,14 +40,18 @@ export function DesktopIcon({ id, label, icon: Icon, onDoubleClick }: DesktopIco
   };
 
   return (
-    <button
+    <motion.button
+      ref={setRef}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.94 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       className={cn(
-        'desktop-icon flex flex-col items-center justify-center gap-1.5 p-2 rounded-xl transition-all w-20 h-24',
+        'desktop-icon flex flex-col items-center justify-center gap-1.5 p-2 rounded-xl w-20 h-24',
         'hover:bg-white/10',
         isSelected && 'bg-white/15'
       )}
       onClick={handleClick}
-      onDoubleClick={onDoubleClick}
+      onDoubleClick={handleOpen}
       onBlur={handleBlur}
       tabIndex={0}
     >
@@ -53,6 +72,6 @@ export function DesktopIcon({ id, label, icon: Icon, onDoubleClick }: DesktopIco
       >
         {label}
       </span>
-    </button>
+    </motion.button>
   );
 }

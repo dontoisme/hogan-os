@@ -1,5 +1,13 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+
+// Screen rect of the element that triggered the open (icon, menu item,
+// boot CTA) — the window's open animation flies out of it.
+export interface OriginRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 export interface WindowState {
   id: string;
@@ -11,6 +19,7 @@ export interface WindowState {
   isMinimized: boolean;
   isMaximized: boolean;
   zIndex: number;
+  origin?: OriginRect;
 }
 
 interface WindowStore {
@@ -40,8 +49,7 @@ const getDefaultPosition = (index: number) => ({
 });
 
 export const useWindowStore = create<WindowStore>()(
-  persist(
-    (set, get) => ({
+  (set, get) => ({
       windows: [],
       activeWindowId: null,
       highestZIndex: 0,
@@ -70,6 +78,7 @@ export const useWindowStore = create<WindowStore>()(
           isMinimized: false,
           isMaximized: false,
           zIndex: newZIndex,
+          origin: options.origin,
         };
 
         set({
@@ -172,12 +181,5 @@ export const useWindowStore = create<WindowStore>()(
       getWindow: (id) => {
         return get().windows.find(w => w.id === id);
       },
-    }),
-    {
-      name: 'window-store',
-      partialize: (state) => ({
-        // Only persist window positions and sizes, not open state
-      }),
-    }
-  )
+  })
 );

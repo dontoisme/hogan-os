@@ -8,7 +8,10 @@ export type SoundType =
   | 'error'
   | 'minimize'
   | 'startMenu'
-  | 'notification';
+  | 'notification'
+  | 'keystroke'
+  | 'toast'
+  | 'bootBeep';
 
 let audioCtx: AudioContext | null = null;
 
@@ -119,6 +122,21 @@ function playNotification() {
   playTone(1108.73, 0.18, 'sine', 0.1, 0.1);      // C#6
 }
 
+function playKeystroke() {
+  // Tiny tick, randomized pitch so typing doesn't sound robotic
+  playTone(1100 + Math.random() * 300, 0.015, 'square', 0.03);
+}
+
+function playToast() {
+  // Single soft ping (distinct from the two-note notification)
+  playTone(987.77, 0.15, 'sine', 0.09);           // B5
+}
+
+function playBootBeep() {
+  // Classic POST beep
+  playTone(880, 0.08, 'square', 0.08);
+}
+
 const soundMap: Record<SoundType, () => void> = {
   startup: playStartup,
   windowOpen: playWindowOpen,
@@ -128,6 +146,9 @@ const soundMap: Record<SoundType, () => void> = {
   minimize: playMinimize,
   startMenu: playStartMenu,
   notification: playNotification,
+  keystroke: playKeystroke,
+  toast: playToast,
+  bootBeep: playBootBeep,
 };
 
 export function playRetroSound(sound: SoundType) {

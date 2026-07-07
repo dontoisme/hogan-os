@@ -7,38 +7,9 @@ import { Sun, Moon, Monitor } from 'lucide-react';
 import { useRetroSounds } from '@/hooks/useRetroSounds';
 import { MobileAppGrid } from './MobileAppGrid';
 import { MobileAppPanel } from './MobileAppPanel';
-import { ReadmeWindow } from '../windows/ReadmeWindow';
-import { ResumeWindow } from '../windows/ResumeWindow';
-import { ProjectsWindow } from '../windows/ProjectsWindow';
-import { ExperienceWindow } from '../windows/ExperienceWindow';
-import { ContactWindow } from '../windows/ContactWindow';
-import { SettingsWindow } from '../windows/SettingsWindow';
-import { JobJournalWindow } from '../windows/JobJournalWindow';
-import { AboutWindow } from '../windows/AboutWindow';
 import { profile } from '@/data/profile';
+import { getApp } from '@/data/apps';
 import { OPEN_APP_EVENT, getRequestedApp } from '@/lib/openApp';
-
-const windowComponents: Record<string, React.ComponentType> = {
-  readme: ReadmeWindow,
-  resume: ResumeWindow,
-  projects: ProjectsWindow,
-  experience: ExperienceWindow,
-  contact: ContactWindow,
-  settings: SettingsWindow,
-  'job-journal': JobJournalWindow,
-  about: AboutWindow,
-};
-
-const appTitles: Record<string, string> = {
-  readme: 'Start Here',
-  resume: 'Resume',
-  projects: 'Side Quests',
-  experience: 'The Journey',
-  contact: 'Say Hi',
-  settings: 'Preferences',
-  'job-journal': 'Job Journal',
-  about: 'The Dude',
-};
 
 const themeOrder: ThemeMode[] = ['dark', 'light', 'retro'];
 const themeIcons = { dark: Moon, light: Sun, retro: Monitor };
@@ -56,7 +27,7 @@ export function MobileShell() {
   // Open apps requested by the boot screen CTAs or the ?app= deep link
   useEffect(() => {
     const open = (id: string) => {
-      if (windowComponents[id]) setActiveApp(id);
+      if (getApp(id)?.onMobile) setActiveApp(id);
     };
     const handler = (e: Event) => open((e as CustomEvent).detail?.id);
     window.addEventListener(OPEN_APP_EVENT, handler);
@@ -71,7 +42,8 @@ export function MobileShell() {
   };
 
   const ThemeIcon = themeIcons[theme] || Moon;
-  const ActiveComponent = activeApp ? windowComponents[activeApp] : null;
+  const activeAppDef = activeApp ? getApp(activeApp) : null;
+  const ActiveComponent = activeAppDef?.Window ?? null;
 
   return (
     <div className="mobile-only min-h-screen flex flex-col bg-[var(--bg-primary)] mobile-shell">
@@ -107,7 +79,7 @@ export function MobileShell() {
             <MobileAppPanel
               key={activeApp}
               appId={activeApp}
-              title={appTitles[activeApp] || activeApp}
+              title={activeAppDef?.mobileTitle || activeApp}
               onClose={() => setActiveApp(null)}
             >
               <ActiveComponent />

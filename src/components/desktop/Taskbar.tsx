@@ -6,6 +6,7 @@ import { StartMenu } from './StartMenu';
 import { SystemTray } from './SystemTray';
 import { cn } from '@/lib/utils';
 import { playRetroSound } from '@/lib/retroSounds';
+import { registerRect } from '@/lib/rectRegistry';
 import Image from 'next/image';
 
 export function Taskbar() {
@@ -62,6 +63,7 @@ export function Taskbar() {
           {windows.map((window) => (
             <button
               key={window.id}
+              ref={(el) => registerRect(`taskbar:${window.id}`, el)}
               className={cn(
                 'flex items-center gap-2 px-3 h-8 rounded-lg transition-colors min-w-[100px] max-w-[180px]',
                 'hover:bg-[var(--bg-tertiary)]',

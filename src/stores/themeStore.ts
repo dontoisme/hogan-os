@@ -8,6 +8,7 @@ interface ThemeStore {
   soundEnabled: boolean;
   setTheme: (theme: ThemeMode) => void;
   toggleSound: () => void;
+  setSoundEnabled: (enabled: boolean) => void;
 }
 
 export const useThemeStore = create<ThemeStore>()(
@@ -18,6 +19,7 @@ export const useThemeStore = create<ThemeStore>()(
 
       setTheme: (theme) => set({ theme }),
       toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
+      setSoundEnabled: (enabled) => set({ soundEnabled: enabled }),
     }),
     {
       name: 'theme-store',

@@ -3,7 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useWindowStore, WindowState } from '@/stores/windowStore';
-import { X, Minus, Square, Maximize2 } from 'lucide-react';
+import { getRect } from '@/lib/rectRegistry';
 import { cn } from '@/lib/utils';
 
 interface WindowProps {
@@ -149,17 +149,58 @@ export function Window({ windowState, children }: WindowProps) {
     ? { width: '100%', height: 'calc(100% - 44px)' }
     : { width: windowState.size.width, height: windowState.size.height };
 
+  // The window always renders at its final left/top; entry/minimize animate
+  // x/y/scale offsets so the math survives drags, resizes, and maximize.
+  const windowCenter = () => ({
+    x: windowState.isMaximized
+      ? window.innerWidth / 2
+      : windowState.position.x + windowState.size.width / 2,
+    y: windowState.isMaximized
+      ? (window.innerHeight - 44) / 2
+      : windowState.position.y + windowState.size.height / 2,
+  });
+
+  // Entry offset is captured once at mount (origin = the icon/menu item/CTA
+  // that opened this window); without an origin, a gentle fade-up.
+  const [entryInitial] = useState(() => {
+    const o = windowState.origin;
+    if (!o) return { x: 0, y: 12, scale: 0.96, opacity: 0 };
+    const c = windowCenter();
+    return {
+      x: o.x + o.width / 2 - c.x,
+      y: o.y + o.height / 2 - c.y,
+      scale: 0.15,
+      opacity: 0,
+    };
+  });
+
+  const minimizeTarget = () => {
+    const c = windowCenter();
+    const btn = getRect(`taskbar:${windowState.id}`);
+    return {
+      x: btn ? btn.x + btn.width / 2 - c.x : 0,
+      y: btn ? btn.y + btn.height / 2 - c.y : window.innerHeight - c.y,
+      scale: 0.05,
+      opacity: 0,
+    };
+  };
+
   return (
     <motion.div
       ref={windowRef}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.15 }}
+      initial={entryInitial}
+      animate={
+        windowState.isMinimized
+          ? minimizeTarget()
+          : { x: 0, y: 0, scale: 1, opacity: isActive ? 1 : 0.9 }
+      }
+      exit={{ scale: 0.92, opacity: 0, transition: { duration: 0.15 } }}
+      transition={{ duration: 0.25, ease: [0.2, 0.9, 0.3, 1] }}
+      inert={windowState.isMinimized || undefined}
       className={cn(
         'window-chrome absolute flex flex-col rounded-xl overflow-hidden',
         'border border-[var(--border-color)]',
-        isActive ? 'ring-1 ring-[var(--border-color)]' : 'opacity-90'
+        isActive && 'ring-1 ring-[var(--border-color)]'
       )}
       style={{
         left: position.x,
@@ -169,6 +210,7 @@ export function Window({ windowState, children }: WindowProps) {
         zIndex: windowState.zIndex,
         background: 'var(--bg-window)',
         boxShadow: 'var(--window-shadow)',
+        pointerEvents: windowState.isMinimized ? 'none' : undefined,
       }}
       onMouseDown={() => bringToFront(windowState.id)}
     >

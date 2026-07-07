@@ -1,85 +1,30 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { useThemeStore } from '@/stores/themeStore';
 import { useWindowStore } from '@/stores/windowStore';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 import { useRetroSounds } from '@/hooks/useRetroSounds';
-import { OPEN_APP_EVENT, getRequestedApp } from '@/lib/openApp';
+import { OPEN_APP_EVENT, BOOT_DISMISSED_EVENT, getRequestedApp, toOrigin } from '@/lib/openApp';
+import { getRect } from '@/lib/rectRegistry';
+import { desktopApps, getApp, openAppWindow } from '@/data/apps';
 import { DesktopIcon } from './DesktopIcon';
 import { Taskbar } from './Taskbar';
+import { ContextMenu } from './ContextMenu';
 import { Window } from '../windows/Window';
-import { ResumeWindow } from '../windows/ResumeWindow';
-import { ProjectsWindow } from '../windows/ProjectsWindow';
-import { ExperienceWindow } from '../windows/ExperienceWindow';
-import { ContactWindow } from '../windows/ContactWindow';
-import { SettingsWindow } from '../windows/SettingsWindow';
-import { JobJournalWindow } from '../windows/JobJournalWindow';
-import { AboutWindow } from '../windows/AboutWindow';
-import { ReadmeWindow } from '../windows/ReadmeWindow';
-import { Clippy } from '../Clippy';
+import { DingoAssistant } from '../DingoAssistant';
 import { HackerMode } from '../HackerMode';
-import {
-  FolderOpen,
-  FileText,
-  Briefcase,
-  Mail,
-  BarChart3,
-  Settings,
-  User,
-  ScrollText,
-} from 'lucide-react';
+import { Screensaver } from '../system/Screensaver';
 
-const desktopIcons = [
-  { id: 'readme', label: 'Start Here.txt', icon: ScrollText, row: 0, col: 0 },
-  { id: 'projects', label: 'Side Quests', icon: FolderOpen, row: 0, col: 1 },
-  { id: 'resume', label: 'Resume (Final)3.pdf', icon: FileText, row: 1, col: 0 },
-  { id: 'experience', label: 'The Journey', icon: Briefcase, row: 1, col: 1 },
-  { id: 'job-journal', label: 'Job Journal', icon: BarChart3, row: 2, col: 0 },
-  { id: 'contact', label: 'Say Hi', icon: Mail, row: 2, col: 1 },
-  { id: 'about', label: 'The Dude', icon: User, row: 3, col: 0 },
-  { id: 'settings', label: 'Preferences', icon: Settings, row: 3, col: 1 },
-];
-
-const windowComponents: Record<string, React.ComponentType> = {
-  readme: ReadmeWindow,
-  resume: ResumeWindow,
-  projects: ProjectsWindow,
-  experience: ExperienceWindow,
-  contact: ContactWindow,
-  settings: SettingsWindow,
-  'job-journal': JobJournalWindow,
-  about: AboutWindow,
-};
-
-const windowTitles: Record<string, string> = {
-  readme: 'Start Here.txt',
-  resume: 'Resume (Final)3.pdf',
-  projects: 'Side Quests',
-  experience: 'The Journey',
-  contact: 'Say Hi',
-  settings: 'Preferences',
-  'job-journal': 'Job Journal',
-  about: 'The Dude',
-};
-
-const windowIcons: Record<string, string> = {
-  readme: 'scroll',
-  resume: 'file',
-  projects: 'folder',
-  experience: 'briefcase',
-  contact: 'mail',
-  settings: 'settings',
-  'job-journal': 'chart',
-  about: 'user',
-};
-
-const windowSizeOverrides: Record<string, { size: { width: number; height: number } }> = {};
+const AUTO_OPEN_KEY = 'hoganos-autoopen-done';
 
 export function Desktop() {
   const { theme } = useThemeStore();
-  const { windows, openWindow } = useWindowStore();
+  const { windows } = useWindowStore();
   const [hackerModeActive, setHackerModeActive] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+  const autoOpenFired = useRef(false);
 
   // Retro sound effects (subscribes to window events)
   useRetroSounds();
@@ -95,20 +40,32 @@ export function Desktop() {
 
   // Open apps requested by the boot screen CTAs or the ?app= deep link
   useEffect(() => {
-    const open = (id: string) => {
-      if (!windowComponents[id]) return;
-      openWindow(id, windowTitles[id] || id, windowIcons[id] || 'file', windowSizeOverrides[id]);
+    const handler = (e: Event) => {
+      const { id, origin } = (e as CustomEvent).detail ?? {};
+      if (id) openAppWindow(id, origin);
     };
-    const handler = (e: Event) => open((e as CustomEvent).detail?.id);
     window.addEventListener(OPEN_APP_EVENT, handler);
     const requested = getRequestedApp();
-    if (requested) open(requested);
+    if (requested) openAppWindow(requested);
     return () => window.removeEventListener(OPEN_APP_EVENT, handler);
-  }, [openWindow]);
+  }, []);
 
-  const handleIconDoubleClick = (id: string) => {
-    openWindow(id, windowTitles[id] || id, windowIcons[id] || 'file', windowSizeOverrides[id]);
-  };
+  // First visit only: after the boot screen is dismissed without opening
+  // anything, Start Here flies open from its desktop icon.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const openedApp = Boolean((e as CustomEvent).detail?.openedApp);
+      if (openedApp || getRequestedApp()) return;
+      if (autoOpenFired.current || localStorage.getItem(AUTO_OPEN_KEY)) return;
+      autoOpenFired.current = true;
+      localStorage.setItem(AUTO_OPEN_KEY, '1');
+      setTimeout(() => {
+        openAppWindow('readme', toOrigin(getRect('icon:readme')));
+      }, 800);
+    };
+    window.addEventListener(BOOT_DISMISSED_EVENT, handler);
+    return () => window.removeEventListener(BOOT_DISMISSED_EVENT, handler);
+  }, []);
 
   return (
     <div
@@ -119,39 +76,61 @@ export function Desktop() {
         backgroundPosition: 'var(--wallpaper-position)',
         backgroundRepeat: 'no-repeat',
       }}
+      onContextMenu={(e) => {
+        // Custom menu on the desktop surface only — windows keep the native menu
+        if ((e.target as HTMLElement).closest('.window-chrome, .retro-taskbar')) return;
+        e.preventDefault();
+        setContextMenu({ x: e.clientX, y: e.clientY });
+      }}
     >
       {/* Desktop Icons */}
       <div className="absolute inset-0 p-4 pb-16">
         <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(auto-fill, 90px)' }}>
-          {desktopIcons.map((item) => (
+          {desktopApps.map((app) => (
             <DesktopIcon
-              key={item.id}
-              id={item.id}
-              label={item.label}
-              icon={item.icon}
-              onDoubleClick={() => handleIconDoubleClick(item.id)}
+              key={app.id}
+              id={app.id}
+              label={app.title}
+              icon={app.icon}
+              onOpen={(rect) => openAppWindow(app.id, toOrigin(rect))}
             />
           ))}
         </div>
       </div>
 
-      {/* Windows */}
-      {windows.map((windowState) => {
-        const WindowContent = windowComponents[windowState.id];
-        if (!WindowContent || windowState.isMinimized) return null;
+      {/* Windows — minimized ones stay mounted so restore animates back
+          from the taskbar and content state survives */}
+      <AnimatePresence>
+        {windows.map((windowState) => {
+          const app = getApp(windowState.id);
+          if (!app) return null;
+          const WindowContent = app.Window;
 
-        return (
-          <Window key={windowState.id} windowState={windowState}>
-            <WindowContent />
-          </Window>
-        );
-      })}
+          return (
+            <Window key={windowState.id} windowState={windowState}>
+              <WindowContent />
+            </Window>
+          );
+        })}
+      </AnimatePresence>
 
       {/* Taskbar */}
       <Taskbar />
 
-      {/* Clippy Helper */}
-      <Clippy />
+      {/* Right-click menu */}
+      {contextMenu && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={() => setContextMenu(null)}
+        />
+      )}
+
+      {/* Dusty the dingo (Clippy's successor) */}
+      <DingoAssistant />
+
+      {/* Idle screensaver */}
+      <Screensaver suspended={hackerModeActive} />
 
       {/* Hacker Mode Easter Egg */}
       <HackerMode

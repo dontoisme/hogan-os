@@ -2,34 +2,36 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, HelpCircle } from 'lucide-react';
+import Image from 'next/image';
+import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const tips = [
-  "Hi! I'm Clippy! It looks like you're viewing a portfolio. Don't Panic.",
-  "Pro tip: Try double-clicking the icons to open windows! It's not rocket science. Well, it's not even regular science.",
-  "Did you know? You can drag windows around by their title bars! Almost as satisfying as catching fish barehanded.",
-  "Fun fact: There's a secret code hidden in this site. The answer might be 42.",
-  "Looking to hire a Growth PM who actually runs experiments? Check out the Resume!",
-  "Want to see real projects? The Projects folder has Job Journal, Darwin, and more.",
-  "Try the retro theme in Settings. It's like nostalgia, but with better conversion rates.",
-  "I've helped improve experimentation velocity by 600%. Let me help you navigate this site.",
-  "Thanks for visiting! I'm always down to chat about A/B testing, fish catching, or Douglas Adams.",
-  "If you're hiring, I once increased day 14 activation from 8% to 25%. Just saying.",
+  "G'day! I'm Dusty, the resident dingo. It looks like you're viewing a portfolio. Don't Panic.",
+  'Pro tip: double-click the icons to open windows. Drag them by the title bar. Minimize them and watch where they go.',
+  'There\'s a Terminal on the desktop. Type `git log --oneline` in it — the whole career, as commits.',
+  'Fun fact: there\'s a secret code hidden in this site. The answer might be 42. (↑↑ is a good start.)',
+  'Hiring a product leader? The Resume icon has a real PDF behind it. Radical, I know.',
+  'Don grew Wellcore from $100K to $1.8M ARR with a 7-person company. I mostly supervised.',
+  'Day 14 activation from 8% to 25% at Mattermost. I would have settled for 20%, but nobody asked me.',
+  'Try the retro theme in Preferences. It\'s like nostalgia, but with better conversion rates.',
+  'Check the Recycle Bin. Some things are better left deleted.',
+  'If you go idle for a minute, I get the whole screen to myself. Just saying.',
 ];
 
-export function Clippy() {
+const SHOW_DELAY = 25_000;
+
+export function DingoAssistant() {
   const [isVisible, setIsVisible] = useState(false);
   const [currentTip, setCurrentTip] = useState(0);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    // Show Clippy after a delay
     const showTimer = setTimeout(() => {
       if (!dismissed) {
         setIsVisible(true);
       }
-    }, 5000);
+    }, SHOW_DELAY);
 
     return () => clearTimeout(showTimer);
   }, [dismissed]);
@@ -39,7 +41,7 @@ export function Clippy() {
     if (isVisible) {
       const hideTimer = setTimeout(() => {
         setIsVisible(false);
-      }, 10000);
+      }, 12000);
 
       return () => clearTimeout(hideTimer);
     }
@@ -61,7 +63,7 @@ export function Clippy() {
 
   return (
     <>
-      {/* Clippy Button (when hidden) */}
+      {/* Dusty button (when hidden) */}
       {!isVisible && (
         <motion.button
           initial={{ scale: 0 }}
@@ -71,16 +73,23 @@ export function Clippy() {
             'w-12 h-12 rounded-full',
             'bg-[var(--bg-window)] border border-[var(--border-color)]',
             'flex items-center justify-center',
-            'shadow-lg hover:shadow-xl transition-shadow'
+            'shadow-lg hover:shadow-xl transition-shadow overflow-hidden'
           )}
           onClick={handleShow}
-          title="Need help?"
+          title="Ask the dingo"
         >
-          <HelpCircle className="w-6 h-6 text-[var(--accent)]" />
+          <Image
+            src="/images/dingo/dingo-idle.png"
+            alt="Dusty the dingo"
+            width={36}
+            height={36}
+            className="pixelated"
+            unoptimized
+          />
         </motion.button>
       )}
 
-      {/* Clippy Dialog */}
+      {/* Dusty dialog — sits above the toast corner so they never overlap */}
       <AnimatePresence>
         {isVisible && (
           <motion.div
@@ -88,7 +97,7 @@ export function Clippy() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             className={cn(
-              'fixed bottom-16 right-4 z-50',
+              'fixed bottom-32 right-4 z-50',
               'w-72 rounded-lg overflow-hidden',
               'bg-[var(--bg-window)] border border-[var(--border-color)]',
               'shadow-2xl'
@@ -97,12 +106,21 @@ export function Clippy() {
             {/* Header */}
             <div className="flex items-center justify-between px-3 py-2 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
               <div className="flex items-center gap-2">
-                <span className="text-2xl">📎</span>
-                <span className="text-sm font-medium text-[var(--text-primary)]">Clippy</span>
+                <Image
+                  src="/images/dingo/dingo-wave.png"
+                  alt=""
+                  width={28}
+                  height={28}
+                  className="pixelated"
+                  unoptimized
+                />
+                <span className="text-sm font-medium text-[var(--text-primary)]">Dusty</span>
+                <span className="text-[10px] text-[var(--text-muted)]">spirit animal, unpaid</span>
               </div>
               <button
                 onClick={handleDismiss}
                 className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                aria-label="Dismiss"
               >
                 <X className="w-4 h-4" />
               </button>

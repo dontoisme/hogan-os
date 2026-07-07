@@ -1,35 +1,7 @@
 'use client';
 
-import {
-  ScrollText,
-  FolderOpen,
-  FileText,
-  Briefcase,
-  BarChart3,
-  Mail,
-  User,
-  Settings,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 import { playRetroSound } from '@/lib/retroSounds';
-
-interface MobileApp {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-  description: string;
-}
-
-const mobileApps: MobileApp[] = [
-  { id: 'readme', label: 'Start Here', icon: ScrollText, description: 'Who I am & what I do' },
-  { id: 'projects', label: 'Side Quests', icon: FolderOpen, description: 'What I build' },
-  { id: 'resume', label: 'Resume', icon: FileText, description: 'The formal stuff' },
-  { id: 'experience', label: 'The Journey', icon: Briefcase, description: 'Work history' },
-  { id: 'job-journal', label: 'Job Journal', icon: BarChart3, description: 'Application tracker' },
-  { id: 'contact', label: 'Say Hi', icon: Mail, description: 'Get in touch' },
-  { id: 'about', label: 'The Dude', icon: User, description: 'Who I am' },
-  { id: 'settings', label: 'Preferences', icon: Settings, description: 'Theme & sound' },
-];
+import { mobileApps } from '@/data/apps';
 
 interface MobileAppGridProps {
   onOpenApp: (appId: string) => void;
@@ -63,10 +35,10 @@ export function MobileAppGrid({ onOpenApp }: MobileAppGridProps) {
             </div>
             <div className="text-center">
               <p className="text-xs font-medium text-[var(--text-primary)] leading-tight">
-                {app.label}
+                {app.mobileTitle}
               </p>
               <p className="text-[10px] text-[var(--text-muted)] mt-0.5 leading-tight">
-                {app.description}
+                {app.mobileDescription}
               </p>
             </div>
           </button>

@@ -3,12 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useThemeStore } from '@/stores/themeStore';
 import { formatDate } from '@/lib/utils';
-import { Volume2, VolumeX, Wifi, Battery, Sun, Moon, Monitor } from 'lucide-react';
+import { Volume2, VolumeX, Wifi, Battery, Sun, Moon, Monitor, Bell } from 'lucide-react';
+import { NotificationsPanel } from './NotificationsPanel';
+import { playRetroSound } from '@/lib/retroSounds';
 import { cn } from '@/lib/utils';
 
 export function SystemTray() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showThemeMenu, setShowThemeMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notificationsSeen, setNotificationsSeen] = useState(false);
   const { theme, setTheme, soundEnabled, toggleSound } = useThemeStore();
 
   useEffect(() => {
@@ -53,26 +57,51 @@ export function SystemTray() {
       </button>
 
       {/* WiFi (decorative) */}
-      <button
-        className={cn(
-          'p-1.5 rounded-lg transition-colors',
-          'hover:bg-[var(--bg-tertiary)]'
-        )}
-        title="Connected"
+      <span
+        className="p-1.5 rounded-lg"
+        title="Connected to: Opportunity Network · Firewall: blocking imposter syndrome"
+        aria-hidden="true"
       >
         <Wifi className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-      </button>
+      </span>
 
       {/* Battery (decorative) */}
-      <button
-        className={cn(
-          'p-1.5 rounded-lg transition-colors',
-          'hover:bg-[var(--bg-tertiary)]'
-        )}
-        title="Battery: 100%"
+      <span
+        className="p-1.5 rounded-lg"
+        title="Energy: Growth Fuel [████████░░] 80% · Last charged: this morning's trail ride"
+        aria-hidden="true"
       >
         <Battery className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-      </button>
+      </span>
+
+      {/* Notifications */}
+      <div className="relative">
+        <button
+          className={cn(
+            'relative p-1.5 rounded-lg transition-colors',
+            'hover:bg-[var(--bg-tertiary)]',
+            showNotifications && 'bg-[var(--bg-tertiary)]'
+          )}
+          onClick={() => {
+            if (!showNotifications) {
+              playRetroSound('notification');
+              setNotificationsSeen(true);
+            }
+            setShowNotifications(!showNotifications);
+          }}
+          title="Notifications"
+          aria-expanded={showNotifications}
+        >
+          <Bell className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+          {!notificationsSeen && (
+            <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+          )}
+        </button>
+
+        {showNotifications && (
+          <NotificationsPanel onClose={() => setShowNotifications(false)} />
+        )}
+      </div>
 
       {/* Theme Toggle */}
       <div className="relative">

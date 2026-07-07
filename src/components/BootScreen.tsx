@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import Image from 'next/image';
 import { FileText, Briefcase, Mail, ArrowRight } from 'lucide-react';
 import { profile } from '@/data/profile';
-import { openApp, getRequestedApp } from '@/lib/openApp';
+import { openApp, toOrigin, getRequestedApp, BOOT_DISMISSED_EVENT } from '@/lib/openApp';
+import { BootPost } from './boot/BootPost';
+import { cn } from '@/lib/utils';
 
 const BOOT_SEEN_KEY = 'hoganos-boot-seen';
 
@@ -14,10 +16,17 @@ const ctas = [
   { id: 'contact', label: 'Say Hi', icon: Mail },
 ];
 
-// Server-rendered so the hero text (name, title, pitch) is crawlable.
-// Hidden before paint for returning visitors and ?app= deep links.
+type BootPhase = 'post' | 'logo' | 'hero';
+
+// Server-rendered so the hero text (name, title, pitch) is crawlable — the
+// SSR state is always the settled hero. First-time visitors are upgraded to
+// the POST sequence before paint; return visitors and ?app= deep links hide
+// before paint.
 export function BootScreen() {
   const [hidden, setHidden] = useState(false);
+  // 'hero' on server AND initial client render (hydration match + SSR text).
+  const [phase, setPhase] = useState<BootPhase>('hero');
+  const [heroAnimate, setHeroAnimate] = useState(false);
 
   useLayoutEffect(() => {
     if (localStorage.getItem(BOOT_SEEN_KEY) || getRequestedApp()) {
@@ -25,23 +34,51 @@ export function BootScreen() {
       // for crawlability and needs to vanish without a flash for return visits.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setHidden(true);
+      return;
+    }
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion) {
+      // First visit: play the POST sequence (before paint, so the settled
+      // hero never flashes first).
+      setPhase('post');
     }
   }, []);
 
-  const dismiss = (appId?: string) => {
+  const dismiss = useCallback((appId?: string, originEl?: HTMLElement) => {
     localStorage.setItem(BOOT_SEEN_KEY, '1');
     setHidden(true);
-    if (appId) openApp(appId);
-  };
+    if (appId) openApp(appId, toOrigin(originEl?.getBoundingClientRect()));
+    window.dispatchEvent(
+      new CustomEvent(BOOT_DISMISSED_EVENT, { detail: { openedApp: Boolean(appId) } })
+    );
+  }, []);
+
+  const skipToHero = useCallback(() => {
+    setHeroAnimate(false);
+    setPhase('hero');
+  }, []);
+
+  const finishPost = useCallback(() => {
+    setPhase('logo');
+    setTimeout(() => {
+      setHeroAnimate(true);
+      setPhase('hero');
+    }, 450);
+  }, []);
 
   useEffect(() => {
     if (hidden) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === 'Escape') dismiss();
+      if (e.key !== 'Enter' && e.key !== 'Escape') return;
+      if (phase === 'hero') {
+        dismiss();
+      } else {
+        skipToHero();
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [hidden]);
+  }, [hidden, phase, dismiss, skipToHero]);
 
   if (hidden) return null;
 
@@ -51,8 +88,12 @@ export function BootScreen() {
                  bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100"
       role="dialog"
       aria-label="Welcome to HoganOS"
+      onClick={phase !== 'hero' ? skipToHero : undefined}
     >
-      <div className="max-w-xl w-full">
+      {/* BIOS/POST layer — plays above the hero; hero stays in the DOM for SSR */}
+      {phase !== 'hero' && <BootPost phase={phase} onPostComplete={finishPost} />}
+
+      <div className={cn('max-w-xl w-full', heroAnimate && 'boot-hero-animate')}>
         {/* Boot header */}
         <p className="font-mono text-xs text-zinc-500 mb-6">
           HOGANOS v1.0 — boot complete
@@ -96,7 +137,7 @@ export function BootScreen() {
           {ctas.map((cta) => (
             <button
               key={cta.id}
-              onClick={() => dismiss(cta.id)}
+              onClick={(e) => dismiss(cta.id, e.currentTarget)}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
                          border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 transition-colors"
             >

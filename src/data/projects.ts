@@ -85,7 +85,7 @@ export const projects: Project[] = [
     id: 'hogan-os',
     title: 'HoganOS',
     description: 'This portfolio site. A desktop OS metaphor built with Next.js and too much nostalgia.',
-    longDescription: 'The very site you\'re looking at. Inspired by PostHog\'s playful desktop UI and my fond memories of Windows 95. Features draggable windows, a taskbar, Clippy, and a Konami code easter egg because of course it does.',
+    longDescription: 'The very site you\'re looking at. Inspired by PostHog\'s playful desktop UI and my fond memories of Windows 95. Features draggable windows, a taskbar, a pixel-art dingo assistant, and a Konami code easter egg because of course it does.',
     tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Zustand', 'Framer Motion'],
     status: 'active',
     tier: 2,
